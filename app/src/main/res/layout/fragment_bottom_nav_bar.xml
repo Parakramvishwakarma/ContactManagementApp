@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="10dp"
+     >
+
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:id="@+id/bottomNavBar"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".BottomNavBar">
+
+<ImageButton
+    android:id="@+id/favouritesButton"
+    android:layout_width="0dp"
+    android:layout_height="50dp"
+    android:scaleType="fitCenter"
+    android:layout_weight="1"
+    android:backgroundTint="#00FFFFFF"
+    android:src="@drawable/fav_icon"
+ />
+
+<ImageButton
+    android:id="@+id/contactsButton"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="50dp"
+    android:scaleType="fitCenter"
+    android:backgroundTint="#00FFFFFF"
+    android:src="@drawable/contacts_icon" />
+
+
+<ImageButton
+    android:id="@+id/keyPadButton"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="50dp"
+    android:scaleType="fitCenter"
+    android:backgroundTint="#00FFFFFF"
+    android:src="@drawable/keypad_icon"/>
+</LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
