@@ -5,7 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 @Entity(tableName = "contacts")
-public class Contact extends ViewModel {
+public class Contact {
     // Databse for contacts
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -17,6 +17,9 @@ public class Contact extends ViewModel {
 
     @ColumnInfo(name = "phone_number")
     private long phoneNumber;
+
+    @ColumnInfo(name = "email")
+    private String email;
 
 
     @ColumnInfo(name = "favourite")
@@ -57,6 +60,13 @@ public class Contact extends ViewModel {
     }
     public void setPhoneNumber(long value) {
         this.phoneNumber = value;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String value) {
+        this.email = value;
     }
 
     public int getFavourite() {

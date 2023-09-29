@@ -1,54 +1,54 @@
-package com.example.madassignment;
+package com.example.contactmanager;
 
-import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
-@Dao
-public interface UserDao
-{
-    // Dao for users
+
+public interface ContactDao {
+    // Dao for contacts
     @Insert
-    void insert(User... user);
+    void insert(Contact... contact);
 
     @Update
-    void update(User... user);
+    void update(Contact... contact);
 
     @Delete
-    void delete(User... user);
+    void delete(Contact... contact);
 
-    @Query("SELECT * FROM users ORDER BY user_wins DESC")
-    List<User> getAllUsers();
-
-//    @Query("SELECT user_name AND user_icon FROM users")
-//    List<User> getAllUsersNameAndIcon();
-
-    @Query("SELECT * FROM users WHERE user_name = :userName")
-    User getUsersByName(String userName);
-
-    @Query("SELECT * FROM users WHERE id = :userId")
-    User getUserByID(long userId);
+    @Query("SELECT * FROM contacts")
+    List<Contact> getAllUsers();
 
 
-    @Query("UPDATE users SET user_wins = user_wins + 1 WHERE id = :userId")
-    void updateUserWins(long userId);
+    @Query("SELECT * FROM contacts WHERE first_name = :firstName")
+    Contact getContactsByFirstName(String firstName);
+
+    @Query("SELECT * FROM contacts WHERE last_name = :lastName")
+    Contact getContactsByLastName(String lastName);
+
+    @Query("SELECT * FROM contacts WHERE phone_number = :phoneNumber")
+    Contact getContactsByPhoneNumber(long phoneNumber);
+
+    @Query("SELECT * FROM contacts WHERE email = :email")
+    Contact getContactsByEmail(String email);
+
+    @Query("SELECT * FROM contacts WHERE id = :contactId")
+    Contact getContactByID(long contactId);
 
 
-    @Query("UPDATE users SET user_losses = user_losses + 1 WHERE id = :userId")
-    void updateUserLosses(long userId);
-
-    @Query("UPDATE users SET user_games = user_games + 1 WHERE id = :userId")
-    void updateUserGamesPlayed(long userId);
-
-    @Query("UPDATE users SET user_name = :userName WHERE id = :userId")
-    void updateUserName(long userId, String userName);
-
-    @Query("UPDATE users SET user_icon = :userIcon WHERE id = :userId")
-    void updateUserIcon(long userId, int userIcon);
-
-    @Query("DELETE FROM users WHERE id = :userId")
+    @Query("UPDATE contacts SET first_name = :firstName WHERE id = :contactId")
+    void updateFirstName(long contactId, String firstName);
+    @Query("UPDATE contacts SET last_name = :lastName WHERE id = :contactId")
+    void updateLastName(long contactId, String lastName);
+    @Query("UPDATE contacts SET phone_number = :phoneNumber WHERE id = :contactId")
+    void updatePhoneNumber(long contactId, long phoneNumber);
+    @Query("UPDATE contacts SET email = :email WHERE id = :contactId")
+    void updateEmail(long contactId, String email);
+    @Query("UPDATE contacts SET image = :contactIcon WHERE id = :contactId")
+    void updateContactIcon(long contactId, int contactIcon);
+    @Query("DELETE FROM contacts WHERE id = :userId")
     void deleteUser(long userId);
+
 }

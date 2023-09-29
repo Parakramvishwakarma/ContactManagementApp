@@ -22,8 +22,8 @@ public class AddContactFragment extends Fragment {
             Function: Initialise View models + Elements
             Author: Ryan
      ---------------------------------------------------------------------------------------- */
-    private Contact contactModel;
     private NavigationData navModel;
+    private ContactData contactModel;
     private EditText firstName, lastName;
     private Button addContactButton;
     private String firstNameString, lastNameString;
@@ -36,7 +36,8 @@ public class AddContactFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
-        contactModel = new ViewModelProvider(getActivity()).get(Contact.class);
+        contactModel = new ViewModelProvider(getActivity()).get(ContactData.class);
+        ContactDao contactDao = initialiseDB();
 
     }
 
@@ -63,9 +64,13 @@ public class AddContactFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 firstNameString = String.valueOf(s);
             }
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
         });
 
         /* -----------------------------------------------------------------------------------------
@@ -76,34 +81,44 @@ public class AddContactFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 lastNameString = String.valueOf(s);
             }
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
         });
 
         addContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                saveContact();
+                int contactCount = contactModel.getContactCount();
+                contactModel.setContactCount(contactCount + 1);
+
                 navModel.setClickedValue(0);
                 navModel.setHistoricalClickedValue(0);
             }
         });
 
-        setContactData();
-
-
         return view;
     }
 
-    private List<Contact> setContactData() {
-        List<Contact> data = new ArrayList<Contact>();
-        Contact addContact = new Contact();
-        addContact.setId(contactModel.getId() + 1);
-        addContact.setFirstName(firstNameString);
-        addContact.setLastName(lastNameString);
-        addContact.setImage(R.drawable.mock_contact_image);
-        data.add(addContact);
+    public ContactDao initialiseDB() {
+        return ContactDbInstance.getDatabase(getContext()).contactDao();
+    }
 
-        return data;
+    public void saveContact() {
+        ContactDao contactDao = initialiseDB();
+        Contact contact = new Contact();
+        contact.setUserName(contactModel.getUserName());
+        contact.setUserIcon(userModel.getUserIcon());
+        contact.setUserLosses(0);
+        contact.setUserWins(0);
+        contactDao.insert(user);
+        userModel.setUserIcon(0);
+        userModel.setUserName("");
     }
 }
