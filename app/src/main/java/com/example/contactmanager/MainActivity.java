@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                         loadContactViewFrag();
                         break;
                     case 1:
-                        loadAddContactFrag();
+                        loadContactFrag();
                         break;
                 }
             }
@@ -61,17 +61,17 @@ public class MainActivity extends AppCompatActivity {
 
     /* -----------------------------------------------------------------------------------------
                   Author: Ryan
-                  Description: Loads the add contact fragment
+                  Description: Loads the contact fragment
            ---------------------------------------------------------------------------------------- */
-    private void loadAddContactFrag() {
-        AddContactFragment addContactFragment = new AddContactFragment();
+    private void loadContactFrag() {
+        ContactFragment contactFragment = new ContactFragment();
         FragmentManager fm = getSupportFragmentManager();
         Fragment frag = fm.findFragmentById(R.id.body_container);
         if (frag!= null) {
-            fm.beginTransaction().replace(R.id.body_container, addContactFragment, "addContactFragment").commit();
+            fm.beginTransaction().replace(R.id.body_container, contactFragment, "contactFragment").commit();
         }
         else {
-            fm.beginTransaction().add(R.id.body_container, addContactFragment, "addContactFragment").commit();
+            fm.beginTransaction().add(R.id.body_container, contactFragment, "contactFragment").commit();
         }
     }
 

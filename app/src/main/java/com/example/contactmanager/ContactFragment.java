@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class AddContactFragment extends Fragment {
+public class ContactFragment extends Fragment {
 
-    public AddContactFragment() {
+    public ContactFragment() {
         // Required empty public constructor
     }
 
