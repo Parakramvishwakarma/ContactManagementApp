@@ -39,6 +39,17 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_navBar_container">
     </FrameLayout>
 
+    <!--    Container for the camera takes up the whole screen -->
+    <FrameLayout
+        android:id="@+id/camera_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/navBar_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navBar_container">
+    </FrameLayout>
+
 
 <!--    This the contaciner for bottom layout-->
     <FrameLayout

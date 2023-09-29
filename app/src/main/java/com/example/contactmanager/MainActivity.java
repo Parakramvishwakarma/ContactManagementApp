@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         loadAddContactFrag();
                         break;
+                    // Case 2 reserved for editing user profile
+                    case 3:
+                        loadCameraFrag();
+                        break;
                 }
             }
         });
@@ -77,6 +81,22 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fm.beginTransaction().add(R.id.body_container, addContactFragment, "addContactFragment").commit();
+        }
+    }
+
+    /* -----------------------------------------------------------------------------------------
+                 Author: Ryan
+                 Description: Loads the camera fragment
+          ---------------------------------------------------------------------------------------- */
+    private void loadCameraFrag() {
+        CameraFragment cameraFragment = new CameraFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment frag = fm.findFragmentById(R.id.camera_container);
+        if (frag!= null) {
+            fm.beginTransaction().replace(R.id.camera_container, cameraFragment, "cameraFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.camera_container, cameraFragment, "cameraFragment").commit();
         }
     }
 
