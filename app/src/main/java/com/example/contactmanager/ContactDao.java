@@ -1,5 +1,6 @@
 package com.example.contactmanager;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -7,8 +8,10 @@ import androidx.room.Update;
 
 import java.util.List;
 
+@Dao
 public interface ContactDao {
     // Dao for contacts
+
     @Insert
     void insert(Contact... contact);
 
@@ -19,7 +22,7 @@ public interface ContactDao {
     void delete(Contact... contact);
 
     @Query("SELECT * FROM contacts")
-    List<Contact> getAllUsers();
+    List<Contact> getAllContacts();
 
 
     @Query("SELECT * FROM contacts WHERE first_name = :firstName")

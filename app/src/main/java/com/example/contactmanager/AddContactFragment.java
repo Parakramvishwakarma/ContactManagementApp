@@ -23,10 +23,10 @@ public class AddContactFragment extends Fragment {
             Author: Ryan
      ---------------------------------------------------------------------------------------- */
     private NavigationData navModel;
-    private ContactData contactModel;
-    private EditText firstName, lastName;
+    private CreateContact contactModel;
+    private EditText firstName, lastName, email;
     private Button addContactButton;
-    private String firstNameString, lastNameString;
+    private Long phoneNumberLong;
     public AddContactFragment() {
         // Required empty public constructor
     }
@@ -36,7 +36,7 @@ public class AddContactFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
-        contactModel = new ViewModelProvider(getActivity()).get(ContactData.class);
+        contactModel = new ViewModelProvider(getActivity()).get(CreateContact.class);
         ContactDao contactDao = initialiseDB();
 
     }
@@ -54,6 +54,7 @@ public class AddContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         firstName = view.findViewById(R.id.firstName);
         lastName = view.findViewById(R.id.lastName);
+        email = view.findViewById(R.id.emailBox);
         addContactButton = view.findViewById(R.id.saveContactButton);
 
         /* -----------------------------------------------------------------------------------------
@@ -62,7 +63,8 @@ public class AddContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         firstName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                firstNameString = String.valueOf(s);
+
+                contactModel.setFirstName(String.valueOf(s));
             }
 
             @Override
@@ -79,7 +81,26 @@ public class AddContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         lastName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                lastNameString = String.valueOf(s);
+
+                contactModel.setLastName(String.valueOf(s));
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+        /* -----------------------------------------------------------------------------------------
+            Function: email Text Change Listener
+            Author: Ryan
+         ---------------------------------------------------------------------------------------- */
+        email.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+
+                contactModel.setEmail(String.valueOf(s));
             }
 
             @Override
@@ -113,12 +134,16 @@ public class AddContactFragment extends Fragment {
     public void saveContact() {
         ContactDao contactDao = initialiseDB();
         Contact contact = new Contact();
-        contact.setUserName(contactModel.getUserName());
-        contact.setUserIcon(userModel.getUserIcon());
-        contact.setUserLosses(0);
-        contact.setUserWins(0);
-        contactDao.insert(user);
-        userModel.setUserIcon(0);
-        userModel.setUserName("");
+        contact.setFirstName(contactModel.getFirstName());
+        contact.setLastName(contactModel.getLastName());
+        contact.setEmail(contactModel.getEmail());
+        //contact.setImage(contactModel.getContactIcon());
+        contactDao.insert(contact);
+
+        // Once added, wipes from short term data
+        //contactModel.setContactIcon(0);
+        contactModel.setFirstName("");
+        contactModel.setLastName("");
+        contactModel.setEmail("");
     }
 }

@@ -60,13 +60,13 @@ public class ViewContactsFragment extends Fragment {
     }
 
     public List<Contact> getContactData() {
-        List<Contact> data = new ArrayList<Contact>();
-        Contact test = new Contact();
-        test.setId(1);
-        test.setFirstName("Parakram");
-        test.setLastName("Vishwakarma");
-        test.setImage(R.drawable.mock_contact_image);
-        data.add(test);
+        ContactDao contactDao = initialiseDB();
+        data = null;
+        data = contactDao.getAllContacts();
         return data;
     }
+    public ContactDao initialiseDB() {
+        return ContactDbInstance.getDatabase(getContext()).contactDao();
+    }
+
 }

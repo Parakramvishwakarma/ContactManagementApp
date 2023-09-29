@@ -32,8 +32,6 @@ public class Contact {
     private int image;
 
 
-
-
     public long getId() {
         return id;
     }

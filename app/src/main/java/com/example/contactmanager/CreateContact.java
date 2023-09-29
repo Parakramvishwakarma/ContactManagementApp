@@ -4,7 +4,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class EditUser extends ViewModel {
+public class CreateContact extends ViewModel {
 
     // This ViewModel is used to store data for editing a contact data
 
@@ -19,9 +19,12 @@ public class EditUser extends ViewModel {
     public MutableLiveData<Integer> contactCount; //The amount of users
 
 
-    public EditUser(){
+    public CreateContact(){
         firstName = new MediatorLiveData<String>();
         firstName.setValue("");
+
+        lastName = new MediatorLiveData<String>();
+        lastName.setValue("");
 
         contactIcon = new MediatorLiveData<Integer>();
         contactIcon.setValue(0);

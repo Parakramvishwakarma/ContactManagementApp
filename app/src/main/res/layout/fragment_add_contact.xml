@@ -110,26 +110,15 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintTop_toBottomOf="@+id/firstName" />
 
-    <TextView
+    <EditText
         android:id="@+id/emailBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Add Email"
+        android:hint="Email: "
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal4"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
-        app:layout_constraintStart_toEndOf="@+id/addEmailButton"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal3" />
-
-    <ImageButton
-        android:id="@+id/addEmailButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00000000"
-        android:src="@drawable/add_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/emailBox"
-        app:layout_constraintEnd_toStartOf="@+id/emailBox"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintStart_toEndOf="@+id/guideline_vertical1"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal3" />
 
     <TextView
