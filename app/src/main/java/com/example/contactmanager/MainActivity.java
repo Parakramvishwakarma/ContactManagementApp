@@ -36,13 +36,16 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         loadContactViewFrag();
                         break;
+                    case 1:
+                        loadAddContactFrag();
+                        break;
                 }
             }
         });
     }
     /* -----------------------------------------------------------------------------------------
                   Author: Parakarm
-                  Description: Populates the nav bar fragment
+                  Description: Loads the contact view fragment
            ---------------------------------------------------------------------------------------- */
     private void loadContactViewFrag() {
         ViewContactsFragment contactsFragment = new ViewContactsFragment();
@@ -53,6 +56,22 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fm.beginTransaction().add(R.id.body_container, contactsFragment, "contactsFragment").commit();
+        }
+    }
+
+    /* -----------------------------------------------------------------------------------------
+                  Author: Ryan
+                  Description: Loads the add contact fragment
+           ---------------------------------------------------------------------------------------- */
+    private void loadAddContactFrag() {
+        AddContactFragment addContactFragment = new AddContactFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment frag = fm.findFragmentById(R.id.body_container);
+        if (frag!= null) {
+            fm.beginTransaction().replace(R.id.body_container, addContactFragment, "addContactFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.body_container, addContactFragment, "addContactFragment").commit();
         }
     }
 
