@@ -9,6 +9,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
+
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram + Ryan
+     ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
     NavBarFragment navBarFragment = new NavBarFragment();
     BottomNavBar bottomNavBar = new BottomNavBar();
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         loadContactViewFrag();
                         break;
                     case 1:
-                        loadContactFrag();
+                        loadAddContactFrag();
                         break;
                 }
             }
@@ -61,17 +66,17 @@ public class MainActivity extends AppCompatActivity {
 
     /* -----------------------------------------------------------------------------------------
                   Author: Ryan
-                  Description: Loads the contact fragment
+                  Description: Loads the add contact fragment
            ---------------------------------------------------------------------------------------- */
-    private void loadContactFrag() {
-        ContactFragment contactFragment = new ContactFragment();
+    private void loadAddContactFrag() {
+        AddContactFragment addContactFragment = new AddContactFragment();
         FragmentManager fm = getSupportFragmentManager();
         Fragment frag = fm.findFragmentById(R.id.body_container);
         if (frag!= null) {
-            fm.beginTransaction().replace(R.id.body_container, contactFragment, "contactFragment").commit();
+            fm.beginTransaction().replace(R.id.body_container, addContactFragment, "addContactFragment").commit();
         }
         else {
-            fm.beginTransaction().add(R.id.body_container, contactFragment, "contactFragment").commit();
+            fm.beginTransaction().add(R.id.body_container, addContactFragment, "addContactFragment").commit();
         }
     }
 

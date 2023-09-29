@@ -1,10 +1,11 @@
 package com.example.contactmanager;
 
+import androidx.lifecycle.ViewModel;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 @Entity(tableName = "contacts")
-public class Contact {
+public class Contact extends ViewModel {
     // Databse for contacts
     @PrimaryKey(autoGenerate = true)
     private long id;
