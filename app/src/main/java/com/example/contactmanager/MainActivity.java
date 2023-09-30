@@ -42,12 +42,9 @@ public class MainActivity extends AppCompatActivity {
                         loadContactViewFrag();
                         break;
                     case 1:
-                        loadAddContactFrag();
+                        loadContactFrag();
                         break;
                     case 2:
-                        loadEditContactFrag();
-                        break;
-                    case 3:
                         loadCameraFrag();
                         break;
                 }
@@ -62,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         ViewContactsFragment contactsFragment = new ViewContactsFragment();
         FragmentManager fm = getSupportFragmentManager();
         Fragment frag = fm.findFragmentById(R.id.body_container);
+        Fragment camera = fm.findFragmentById(R.id.camera_container);
+        if (camera != null) {
+            fm.beginTransaction().remove(camera).commit();
+        }
         if (frag!= null) {
             fm.beginTransaction().replace(R.id.body_container, contactsFragment, "contactsFragment").commit();
         }
@@ -72,33 +73,21 @@ public class MainActivity extends AppCompatActivity {
 
     /* -----------------------------------------------------------------------------------------
                   Author: Ryan
-                  Description: Loads the add contact fragment
+                  Description: Loads the contact fragment
            ---------------------------------------------------------------------------------------- */
-    private void loadAddContactFrag() {
-        AddContactFragment addContactFragment = new AddContactFragment();
+    private void loadContactFrag() {
+        ContactFragment contactFragment = new ContactFragment();
         FragmentManager fm = getSupportFragmentManager();
         Fragment frag = fm.findFragmentById(R.id.body_container);
+        Fragment camera = fm.findFragmentById(R.id.camera_container);
+        if (camera != null) {
+            fm.beginTransaction().remove(camera).commit();
+        }
         if (frag!= null) {
-            fm.beginTransaction().replace(R.id.body_container, addContactFragment, "addContactFragment").commit();
+            fm.beginTransaction().replace(R.id.body_container, contactFragment, "contactFragment").commit();
         }
         else {
-            fm.beginTransaction().add(R.id.body_container, addContactFragment, "addContactFragment").commit();
-        }
-    }
-
-    /* -----------------------------------------------------------------------------------------
-                  Author: Ryan
-                  Description: Loads the edit contact fragment
-           ---------------------------------------------------------------------------------------- */
-    private void loadEditContactFrag() {
-        EditContactFragment editContactFragment = new EditContactFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment frag = fm.findFragmentById(R.id.body_container);
-        if (frag!= null) {
-            fm.beginTransaction().replace(R.id.body_container, editContactFragment, "editContactFragment").commit();
-        }
-        else {
-            fm.beginTransaction().add(R.id.body_container, editContactFragment, "editContactFragment").commit();
+            fm.beginTransaction().add(R.id.body_container, contactFragment, "contactFragment").commit();
         }
     }
 

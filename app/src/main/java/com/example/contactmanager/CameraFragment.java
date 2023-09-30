@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import java.io.File;
 public class CameraFragment extends Fragment {
 
     File photoFile;
+    NavigationData navModel;
     Button takePhotoButton;
     ImageView photoView;
     public CameraFragment() {
@@ -32,6 +34,7 @@ public class CameraFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
     }
 
     @Override
@@ -52,6 +55,8 @@ public class CameraFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //photoButtonClicked();
+                navModel.setClickedValue(0);
+
             }
         });
 

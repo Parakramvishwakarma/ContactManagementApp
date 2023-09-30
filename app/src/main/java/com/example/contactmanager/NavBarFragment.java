@@ -18,7 +18,7 @@ public class NavBarFragment extends Fragment {
             Author: Parakram + Ryan
      ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
-    private ImageButton backButton, addButton;
+    private ImageButton backButton, addButton, importButton;
 
     public NavBarFragment() {
         // Required empty public constructor
@@ -38,7 +38,8 @@ public class NavBarFragment extends Fragment {
 
         /* The navigation integers describe the following fragments:
             navigationData == 0 -> View Contacts Fragment
-            navigationData == 1 -> Add Contacts Fragment
+            navigationData == 1 -> Add/Edit Contacts Fragment
+            navigationData == 2 -> Camera Fragment
          */
 
         // Inflate the layout for this fragment
@@ -51,6 +52,7 @@ public class NavBarFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         backButton = view.findViewById(R.id.backButton);
         addButton = view.findViewById(R.id.addButton);
+        importButton = view.findViewById(R.id.importButton);
 
         /* -----------------------------------------------------------------------------------------
             Function: Add Click Listener
@@ -78,6 +80,18 @@ public class NavBarFragment extends Fragment {
                     navigationData.setClickedValue(0);
                     navigationData.setHistoricalClickedValue(0);
                 }
+            }
+        });
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Import Click Listener
+            Author: Ryan
+            Description: Navigates to ...
+         ---------------------------------------------------------------------------------------- */
+        importButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigationData.setClickedValue(2);
             }
         });
 

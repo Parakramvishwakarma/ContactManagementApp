@@ -13,21 +13,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AddContactFragment extends Fragment {
+public class ContactFragment extends Fragment {
 
     /* -----------------------------------------------------------------------------------------
             Function: Initialise View models + Elements
             Author: Ryan
      ---------------------------------------------------------------------------------------- */
     private NavigationData navModel;
+    private EditContact editContact;
     private CreateContact contactModel;
-    private EditText firstName, lastName, email;
-    private Button addContactButton;
-    private Long phoneNumberLong;
-    public AddContactFragment() {
+    private EditText firstName, lastName, email, phone;
+    private Button saveContactButton;
+    private Long num;
+    public ContactFragment() {
         // Required empty public constructor
     }
 
@@ -37,6 +35,7 @@ public class AddContactFragment extends Fragment {
 
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         contactModel = new ViewModelProvider(getActivity()).get(CreateContact.class);
+        editContact = new ViewModelProvider(getActivity()).get(EditContact.class);
         ContactDao contactDao = initialiseDB();
 
     }
@@ -45,7 +44,10 @@ public class AddContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_contact, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact, container, false);
+
+        // Set isEdit boolean
+        boolean isEdit = editContact.getContactId() != 0;
 
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
@@ -55,7 +57,14 @@ public class AddContactFragment extends Fragment {
         firstName = view.findViewById(R.id.firstName);
         lastName = view.findViewById(R.id.lastName);
         email = view.findViewById(R.id.emailBox);
-        addContactButton = view.findViewById(R.id.saveContactButton);
+        phone = view.findViewById(R.id.phoneBox);
+        saveContactButton = view.findViewById(R.id.saveContactButton);
+
+        // Initialise defaults
+        firstName.setText("");
+        lastName.setText("");
+        email.setText("");
+        phone.setText("");
 
         /* -----------------------------------------------------------------------------------------
             Function: firstName Text Change Listener
@@ -63,7 +72,9 @@ public class AddContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         firstName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-
+                if (isEdit) {
+                    editContact.setFirstName(String.valueOf(s));
+                }
                 contactModel.setFirstName(String.valueOf(s));
             }
 
@@ -81,7 +92,9 @@ public class AddContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         lastName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-
+                if (isEdit) {
+                    editContact.setLastName(String.valueOf(s));
+                }
                 contactModel.setLastName(String.valueOf(s));
             }
 
@@ -99,7 +112,9 @@ public class AddContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         email.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-
+                if (isEdit) {
+                    editContact.setEmail(String.valueOf(s));
+                }
                 contactModel.setEmail(String.valueOf(s));
             }
 
@@ -110,15 +125,45 @@ public class AddContactFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+        /* -----------------------------------------------------------------------------------------
+            Function: phone Text Change Listener
+            Author: Ryan
+         ---------------------------------------------------------------------------------------- */
+        phone.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                try {
+                    num = Long.parseLong(String.valueOf(s));
+                    System.out.println("Converted long value: " + num);
+                } catch (NumberFormatException e) {
+                    System.err.println("Invalid format for long");
+                }
+                if (isEdit) {
+                    editContact.setPhoneNumber(num);
+                }
+                contactModel.setPhoneNumber(num);
+            }
 
-        addContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+
+
+        saveContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                saveContact();
-                int contactCount = contactModel.getContactCount();
-                contactModel.setContactCount(contactCount + 1);
-
+                if (isEdit) {
+                    updateContact();
+                }
+                else {
+                    saveContact();
+                    int contactCount = contactModel.getContactCount();
+                    contactModel.setContactCount(contactCount + 1);
+                }
                 navModel.setClickedValue(0);
                 navModel.setHistoricalClickedValue(0);
             }
@@ -146,4 +191,17 @@ public class AddContactFragment extends Fragment {
         contactModel.setLastName("");
         contactModel.setEmail("");
     }
+    public void updateContact() {
+        ContactDao contactDao = initialiseDB();
+        contactDao.updateFirstName(editContact.getContactId(), editContact.getFirstName());
+        contactDao.updateLastName(editContact.getContactId(), editContact.getLastName());
+        contactDao.updateEmail(editContact.getContactId(), editContact.getEmail());
+
+        // Once added, wipes from short term data
+        //contactModel.setContactIcon(0);
+        editContact.setFirstName("");
+        editContact.setLastName("");
+        editContact.setEmail("");
+    }
+
 }

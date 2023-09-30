@@ -51,7 +51,7 @@ public interface ContactDao {
     void updateEmail(long contactId, String email);
     @Query("UPDATE contacts SET image = :contactIcon WHERE id = :contactId")
     void updateContactIcon(long contactId, int contactIcon);
-    @Query("DELETE FROM contacts WHERE id = :userId")
-    void deleteUser(long userId);
+    @Query("DELETE FROM contacts WHERE id = :contactId")
+    void deleteContact(long contactId);
 
 }
