@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/user_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -45,6 +46,14 @@
         android:clickable="true"
         android:layout_marginStart="10dp"
         android:gravity="center_vertical"
-        android:text="your mum"
+        android:text="Name Placeholder"
         android:focusable="true" />
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:backgroundTint="#00000000"
+        android:src="@drawable/edit_icon"/>
 </LinearLayout>

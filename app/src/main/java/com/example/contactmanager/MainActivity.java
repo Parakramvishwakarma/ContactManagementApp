@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         loadAddContactFrag();
                         break;
-                    // Case 2 reserved for editing user profile
+                    case 2:
+                        loadEditContactFrag();
+                        break;
                     case 3:
                         loadCameraFrag();
                         break;
@@ -81,6 +83,22 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fm.beginTransaction().add(R.id.body_container, addContactFragment, "addContactFragment").commit();
+        }
+    }
+
+    /* -----------------------------------------------------------------------------------------
+                  Author: Ryan
+                  Description: Loads the edit contact fragment
+           ---------------------------------------------------------------------------------------- */
+    private void loadEditContactFrag() {
+        EditContactFragment editContactFragment = new EditContactFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment frag = fm.findFragmentById(R.id.body_container);
+        if (frag!= null) {
+            fm.beginTransaction().replace(R.id.body_container, editContactFragment, "editContactFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.body_container, editContactFragment, "editContactFragment").commit();
         }
     }
 

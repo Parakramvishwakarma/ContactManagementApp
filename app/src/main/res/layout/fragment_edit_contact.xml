@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddContactFragment">
+    tools:context=".EditContactFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_vertical1"
@@ -40,28 +40,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.40" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_percent="0.50" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.60" />
 
-    <TextView
+    <EditText
         android:id="@+id/contactName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Contact"
-        android:textSize="20sp"
+        android:text="Name Holder"
+        android:textSize="24sp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
@@ -75,14 +75,14 @@
         android:src="@drawable/user_profile"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintBottom_toTopOf="@id/addPhotoButton"
+        app:layout_constraintBottom_toTopOf="@id/updatePhotoButton"
         app:layout_constraintTop_toBottomOf="@+id/contactName" />
 
     <Button
-        android:id="@+id/addPhotoButton"
+        android:id="@+id/updatePhotoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Photo"
+        android:text="Update Photo"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal2"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
@@ -90,35 +90,14 @@
         app:layout_constraintTop_toBottomOf="@+id/contactPhoto" />
 
     <EditText
-        android:id="@+id/firstName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="First Name: "
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal2" />
-
-    <EditText
-        android:id="@+id/lastName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Last Name: "
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal3"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toBottomOf="@+id/firstName" />
-
-    <EditText
         android:id="@+id/emailBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Email: "
+        android:hint="Email Placeholder "
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal4"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
-        app:layout_constraintStart_toEndOf="@+id/guideline_vertical1"
+        app:layout_constraintStart_toEndOf="@+id/emailTitle"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal3" />
 
     <EditText
@@ -129,7 +108,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal5"
         app:layout_constraintEnd_toEndOf="@+id/guideline_vertical2"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical1"
+        app:layout_constraintStart_toEndOf="@id/phoneTitle"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal4" />
 
 
@@ -137,11 +116,35 @@
         android:id="@+id/saveContactButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Contact"
+        android:text="Update Contact"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal5" />
+
+    <TextView
+        android:id="@+id/emailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email: "
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal4"
+        app:layout_constraintEnd_toStartOf="@+id/emailBox"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal3" />
+    <TextView
+        android:id="@+id/phoneTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone: "
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal5"
+        app:layout_constraintEnd_toStartOf="@+id/phoneBox"
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal4" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

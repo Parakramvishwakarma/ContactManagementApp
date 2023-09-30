@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class ContactAdapter  extends RecyclerView.Adapter<ContactVH> {
+public class ContactAdapter extends RecyclerView.Adapter<ContactVH> {
     private List<Contact> data;
-
     private NavigationData navigationData;
     private SelectContactModel selectContactModel;
 
@@ -52,9 +51,17 @@ public class ContactAdapter  extends RecyclerView.Adapter<ContactVH> {
                 onItemClick(holder, singleRow);
             }
         });
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigationData.setClickedValue(2);
+                selectContactModel.setContactId(singleRow.getId()); //set the selected users
+                navigationData.setHistoricalClickedValue(navigationData.getHistoricalClickedValue()); // set the historical value this will allow us to come back to it
+            }
+        });
     }
     private void onItemClick(@NonNull ContactVH holder, Contact singleRow) {
-        navigationData.setClickedValue(1); // go to the edit contact page
+        navigationData.setClickedValue(2); // go to the edit contact page
         selectContactModel.setContactId(singleRow.getId()); //set the selected users
         navigationData.setHistoricalClickedValue(navigationData.getHistoricalClickedValue()); // set the historical value this will allow us to come back to it
 
