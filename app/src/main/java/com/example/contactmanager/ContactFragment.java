@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class ContactFragment extends Fragment {
 
@@ -20,9 +21,10 @@ public class ContactFragment extends Fragment {
             Author: Ryan
      ---------------------------------------------------------------------------------------- */
     private NavigationData navModel;
-    private EditContact editContact;
+    private EditContact editContactModel;
     private CreateContact contactModel;
     private EditText firstName, lastName, email, phone;
+    private TextView contactName;
     private Button saveContactButton;
     private Long num;
     public ContactFragment() {
@@ -35,7 +37,7 @@ public class ContactFragment extends Fragment {
 
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         contactModel = new ViewModelProvider(getActivity()).get(CreateContact.class);
-        editContact = new ViewModelProvider(getActivity()).get(EditContact.class);
+        editContactModel = new ViewModelProvider(getActivity()).get(EditContact.class);
         ContactDao contactDao = initialiseDB();
 
     }
@@ -47,7 +49,7 @@ public class ContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
         // Set isEdit boolean
-        boolean isEdit = editContact.getContactId() != 0;
+        boolean isEdit = editContactModel.getContactId() != 0;
 
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
@@ -58,6 +60,7 @@ public class ContactFragment extends Fragment {
         lastName = view.findViewById(R.id.lastName);
         email = view.findViewById(R.id.emailBox);
         phone = view.findViewById(R.id.phoneBox);
+        contactName = view.findViewById(R.id.contactName);
         saveContactButton = view.findViewById(R.id.saveContactButton);
 
         // Initialise defaults
@@ -73,7 +76,8 @@ public class ContactFragment extends Fragment {
         firstName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (isEdit) {
-                    editContact.setFirstName(String.valueOf(s));
+                    editContactModel.setFirstName(String.valueOf(s));
+                    System.out.println("New name is:" + editContactModel.getFirstName());
                 }
                 contactModel.setFirstName(String.valueOf(s));
             }
@@ -93,7 +97,7 @@ public class ContactFragment extends Fragment {
         lastName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (isEdit) {
-                    editContact.setLastName(String.valueOf(s));
+                    editContactModel.setLastName(String.valueOf(s));
                 }
                 contactModel.setLastName(String.valueOf(s));
             }
@@ -113,7 +117,7 @@ public class ContactFragment extends Fragment {
         email.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (isEdit) {
-                    editContact.setEmail(String.valueOf(s));
+                    editContactModel.setEmail(String.valueOf(s));
                 }
                 contactModel.setEmail(String.valueOf(s));
             }
@@ -138,9 +142,9 @@ public class ContactFragment extends Fragment {
                     System.err.println("Invalid format for long");
                 }
                 if (isEdit) {
-                    editContact.setPhoneNumber(num);
+                    //editContactModel.setPhoneNumber(num);
                 }
-                contactModel.setPhoneNumber(num);
+                //contactModel.setPhoneNumber(num);
             }
 
             @Override
@@ -151,20 +155,29 @@ public class ContactFragment extends Fragment {
             }
         });
 
+        if (isEdit) {
+            contactName.setText(editContactModel.getFirstName() + " " + editContactModel.getLastName());
+            firstName.setText(editContactModel.getFirstName());
+            lastName.setText(editContactModel.getLastName());
+            email.setText(editContactModel.getEmail());
+
+            //editContact.setContactId(0);
+        }
+
 
         saveContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (isEdit) {
-                    //updateContact();
+                    updateContact();
                 }
                 else {
                     saveContact();
                     int contactCount = contactModel.getContactCount();
                     contactModel.setContactCount(contactCount + 1);
                 }
-                //navModel.setClickedValue(0);
+                navModel.setClickedValue(0);
                 navModel.setHistoricalClickedValue(0);
             }
         });
@@ -183,27 +196,27 @@ public class ContactFragment extends Fragment {
         contact.setLastName(contactModel.getLastName());
         contact.setEmail(contactModel.getEmail());
         contact.setPhoneNumber(contactModel.getPhoneNumber());
-        //contact.setImage(contactModel.getContactIcon());
+        contact.setImage(contactModel.getContactIcon());
         contactDao.insert(contact);
 
         // Once added, wipes from short term data
-        //contactModel.setContactIcon(0);
-        contactModel.setFirstName("");
-        contactModel.setLastName("");
-        contactModel.setEmail("");
-        contactModel.setPhoneNumber(0L);
+//        contactModel.setContactIcon(0);
+//        contactModel.setFirstName("");
+//        contactModel.setLastName("");
+//        contactModel.setEmail("");
+//        contactModel.setPhoneNumber(0L);
     }
     public void updateContact() {
         ContactDao contactDao = initialiseDB();
-        contactDao.updateFirstName(editContact.getContactId(), editContact.getFirstName());
-        contactDao.updateLastName(editContact.getContactId(), editContact.getLastName());
-        contactDao.updateEmail(editContact.getContactId(), editContact.getEmail());
+        contactDao.updateFirstName(editContactModel.getContactId(), editContactModel.getFirstName());
+        contactDao.updateLastName(editContactModel.getContactId(), editContactModel.getLastName());
+        contactDao.updateEmail(editContactModel.getContactId(), editContactModel.getEmail());
 
         // Once added, wipes from short term data
         //contactModel.setContactIcon(0);
-        editContact.setFirstName("");
-        editContact.setLastName("");
-        editContact.setEmail("");
+        editContactModel.setFirstName("");
+        editContactModel.setLastName("");
+        editContactModel.setEmail("");
     }
 
 }

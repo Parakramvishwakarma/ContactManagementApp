@@ -8,8 +8,8 @@ public class CreateContact extends ViewModel {
 
     // This ViewModel is used to store data for editing a contact data
 
-    public MutableLiveData<String> firstName; // this is the new username
-    public MutableLiveData<String> lastName; // this is the new username
+    public MutableLiveData<String> firstName; // this is the new firstName
+    public MutableLiveData<String> lastName; // this is the new lastName
     public MutableLiveData<Integer> contactIcon; // this is the userIcon
     public MutableLiveData<Long> phoneNumber; // this is the userIcon
     public MutableLiveData<String> email; // this is the new username

@@ -52,12 +52,19 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
             @Override
             public void onClick(View view) {
                 navModel.setClickedValue(1);
-                System.out.println("CONTACT DATA - First Name: " + singleRow.getFirstName());
-                System.out.println("CONTACT DATA - Last Name: " + singleRow.getLastName());
-                System.out.println("CONTACT DATA - Email: " + singleRow.getEmail());
-                System.out.println("CONTACT DATA - Phone: " + singleRow.getPhoneNumber());
-                System.out.println("CONTACT DATA - ID: " + singleRow.getId());
-                System.out.println("CONTACT DATA - Nav: " + navModel.getClickedValue());
+                navModel.setHistoricalClickedValue(1);
+//                System.out.println("RDebug CONTACT DATA - First Name: " + singleRow.getFirstName());
+//                System.out.println("RDebug CONTACT DATA - Last Name: " + singleRow.getLastName());
+//                System.out.println("RDebug CONTACT DATA - Email: " + singleRow.getEmail());
+//                System.out.println("RDebug CONTACT DATA - Phone: " + singleRow.getPhoneNumber());
+//                System.out.println("RDebug CONTACT DATA - ID: " + singleRow.getId());
+//                System.out.println("RDebug CONTACT DATA - Nav: " + navModel.getClickedValue());
+
+                editContactModel.setFirstName(singleRow.getFirstName());
+                editContactModel.setLastName(singleRow.getLastName());
+                editContactModel.setEmail(singleRow.getEmail());
+                //editContactModel.setPhoneNumber(singleRow.getPhoneNumber());
+                editContactModel.setContactId(singleRow.getId());
 
             }
         });

@@ -33,9 +33,9 @@ public class ViewContactsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigationData = new ViewModelProvider(this).get(NavigationData.class);
-        editContactModel = new ViewModelProvider(this).get(EditContact.class);
-        contactModel = new ViewModelProvider(this).get(ContactData.class);
+        navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
+        editContactModel = new ViewModelProvider(getActivity()).get(EditContact.class);
+        contactModel = new ViewModelProvider(getActivity()).get(ContactData.class);
     }
 
     @Override

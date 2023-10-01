@@ -19,6 +19,8 @@ public class NavBarFragment extends Fragment {
      ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
     private ImageButton backButton, addButton, importButton;
+    CreateContact contactModel;
+    EditContact editContactModel;
 
     public NavBarFragment() {
         // Required empty public constructor
@@ -29,7 +31,8 @@ public class NavBarFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
-
+        contactModel = new ViewModelProvider(getActivity()).get(CreateContact.class);
+        editContactModel = new ViewModelProvider(getActivity()).get(EditContact.class);
     }
 
     @Override
@@ -92,6 +95,8 @@ public class NavBarFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navigationData.setClickedValue(2);
+                navigationData.setHistoricalClickedValue(2);
+
             }
         });
 

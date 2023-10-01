@@ -12,7 +12,7 @@ public class EditContact extends ViewModel {
     public MutableLiveData<String> lastName; // this is the new username
     public MutableLiveData<Integer> contactIcon; // this is the userIcon
     public MutableLiveData<Long> phoneNumber; // this is the userIcon
-    public MutableLiveData<String> email; // this is the new username
+    public MutableLiveData<String> email; // this is the contact email
     public MutableLiveData<Long> contactId; // permanent userID
     public MutableLiveData<Long> deleteContactId; // the userID of the user we decide to delete
     public MutableLiveData<Integer> deleteContactPosition; //the position of hte user in the RecycleView that we decide to delete
