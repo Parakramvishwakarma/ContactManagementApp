@@ -3,10 +3,7 @@ package com.example.contactmanager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-
 import java.util.*;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +41,6 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
             @Override
             public void onClick(View view) {
                 deleteContact(position, singleRow.getId(), holder, singleRow);
-                //navModel.setClickedValue(2);
             }
         });
 
@@ -56,16 +52,13 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
             @Override
             public void onClick(View view) {
                 navModel.setClickedValue(1);
-                System.out.println("GO TO EDIT FRAGMENT PLEASE!");
-//                if (editContactModel.getContactId() != 0L) {
-//                    System.out.println("contact is not null");
-//                    //navModel.setHistoricalClickedValue(1);
-//                    //editContactModel.setContactIcon(singleRow.getImage());
-//                    editContactModel.setFirstName(singleRow.getFirstName());
-//                    editContactModel.setLastName(singleRow.getLastName());
-//                    editContactModel.setContactId(singleRow.getId());
-//                    System.out.println("NAVMODEL: " + navModel.getClickedValue());
-//                }
+                System.out.println("CONTACT DATA - First Name: " + singleRow.getFirstName());
+                System.out.println("CONTACT DATA - Last Name: " + singleRow.getLastName());
+                System.out.println("CONTACT DATA - Email: " + singleRow.getEmail());
+                System.out.println("CONTACT DATA - Phone: " + singleRow.getPhoneNumber());
+                System.out.println("CONTACT DATA - ID: " + singleRow.getId());
+                System.out.println("CONTACT DATA - Nav: " + navModel.getClickedValue());
+
             }
         });
     }

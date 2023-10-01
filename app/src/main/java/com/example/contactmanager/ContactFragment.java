@@ -157,14 +157,14 @@ public class ContactFragment extends Fragment {
             public void onClick(View view) {
 
                 if (isEdit) {
-                    updateContact();
+                    //updateContact();
                 }
                 else {
                     saveContact();
                     int contactCount = contactModel.getContactCount();
                     contactModel.setContactCount(contactCount + 1);
                 }
-                navModel.setClickedValue(0);
+                //navModel.setClickedValue(0);
                 navModel.setHistoricalClickedValue(0);
             }
         });
@@ -182,6 +182,7 @@ public class ContactFragment extends Fragment {
         contact.setFirstName(contactModel.getFirstName());
         contact.setLastName(contactModel.getLastName());
         contact.setEmail(contactModel.getEmail());
+        contact.setPhoneNumber(contactModel.getPhoneNumber());
         //contact.setImage(contactModel.getContactIcon());
         contactDao.insert(contact);
 
@@ -190,6 +191,7 @@ public class ContactFragment extends Fragment {
         contactModel.setFirstName("");
         contactModel.setLastName("");
         contactModel.setEmail("");
+        contactModel.setPhoneNumber(0L);
     }
     public void updateContact() {
         ContactDao contactDao = initialiseDB();
