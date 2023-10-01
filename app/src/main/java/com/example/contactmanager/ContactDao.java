@@ -1,9 +1,13 @@
 package com.example.contactmanager;
 
+import android.graphics.Bitmap;
+
 import androidx.room.Dao;
+import androidx.room.Database;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.TypeConverters;
 import androidx.room.Update;
 
 import java.util.List;
@@ -50,8 +54,9 @@ public interface ContactDao {
     @Query("UPDATE contacts SET email = :email WHERE id = :contactId")
     void updateEmail(long contactId, String email);
     @Query("UPDATE contacts SET image = :contactIcon WHERE id = :contactId")
-    void updateContactIcon(long contactId, int contactIcon);
+    void updateContactIcon(long contactId, Bitmap contactIcon);
     @Query("DELETE FROM contacts WHERE id = :contactId")
     void deleteContact(long contactId);
+
 
 }

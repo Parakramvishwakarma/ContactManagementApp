@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         loadContactFrag();
                         break;
-                    case 2:
-                        loadCameraFrag();
-                        break;
                 }
             }
         });
@@ -59,10 +56,6 @@ public class MainActivity extends AppCompatActivity {
         ViewContactsFragment contactsFragment = new ViewContactsFragment();
         FragmentManager fm = getSupportFragmentManager();
         Fragment frag = fm.findFragmentById(R.id.body_container);
-        Fragment camera = fm.findFragmentById(R.id.camera_container);
-        if (camera != null) {
-            fm.beginTransaction().remove(camera).commit();
-        }
         if (frag!= null) {
             fm.beginTransaction().replace(R.id.body_container, contactsFragment, "contactsFragment").commit();
         }
@@ -79,31 +72,11 @@ public class MainActivity extends AppCompatActivity {
         ContactFragment contactFragment = new ContactFragment();
         FragmentManager fm = getSupportFragmentManager();
         Fragment frag = fm.findFragmentById(R.id.body_container);
-        Fragment camera = fm.findFragmentById(R.id.camera_container);
-        if (camera != null) {
-            fm.beginTransaction().remove(camera).commit();
-        }
         if (frag!= null) {
             fm.beginTransaction().replace(R.id.body_container, contactFragment, "contactFragment").commit();
         }
         else {
             fm.beginTransaction().add(R.id.body_container, contactFragment, "contactFragment").commit();
-        }
-    }
-
-    /* -----------------------------------------------------------------------------------------
-                 Author: Ryan
-                 Description: Loads the camera fragment
-          ---------------------------------------------------------------------------------------- */
-    private void loadCameraFrag() {
-        CameraFragment cameraFragment = new CameraFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment frag = fm.findFragmentById(R.id.camera_container);
-        if (frag!= null) {
-            fm.beginTransaction().replace(R.id.camera_container, cameraFragment, "cameraFragment").commit();
-        }
-        else {
-            fm.beginTransaction().add(R.id.camera_container, cameraFragment, "cameraFragment").commit();
         }
     }
 

@@ -1,18 +1,34 @@
 package com.example.contactmanager;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
 
 public class ContactFragment extends Fragment {
 
@@ -25,8 +41,11 @@ public class ContactFragment extends Fragment {
     private CreateContact contactModel;
     private EditText firstName, lastName, email, phone;
     private TextView contactName;
-    private Button saveContactButton;
+    private ImageView contactPhoto;
+    private Button saveContactButton, addPhotoButton;
     private Long num;
+    private boolean isEdit;
+    private File photoFile;
     public ContactFragment() {
         // Required empty public constructor
     }
@@ -49,7 +68,7 @@ public class ContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
         // Set isEdit boolean
-        boolean isEdit = editContactModel.getContactId() != 0;
+        isEdit = editContactModel.getContactId() != 0;
 
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
@@ -62,6 +81,8 @@ public class ContactFragment extends Fragment {
         phone = view.findViewById(R.id.phoneBox);
         contactName = view.findViewById(R.id.contactName);
         saveContactButton = view.findViewById(R.id.saveContactButton);
+        addPhotoButton = view.findViewById(R.id.addPhotoButton);
+        contactPhoto = view.findViewById(R.id.contactPhoto);
 
         // Initialise defaults
         firstName.setText("");
@@ -135,16 +156,32 @@ public class ContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         phone.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                try {
-                    num = Long.parseLong(String.valueOf(s));
-                    System.out.println("Converted long value: " + num);
-                } catch (NumberFormatException e) {
-                    System.err.println("Invalid format for long");
+
+                // Applies a filter to the phone number input to prevent non digits (0-9) from being typed
+                InputFilter filter = new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                        for (int i = start; i < end; i++) {
+                            if (!Character.isDigit(source.charAt(i))) {
+                                return "";
+                            }
+                        }
+                        return null; // Accept the input
+                    }
+                };
+                phone.setFilters(new InputFilter[] { filter });
+                String inputText = phone.getText().toString();
+                if (inputText != null) {
+                    try {
+                        num = Long.parseLong(String.valueOf(s));
+                        if (isEdit) {
+                            editContactModel.setPhoneNumber(num);
+                        }
+                        contactModel.setPhoneNumber(num);
+                    } catch (NumberFormatException e) {
+                        System.err.println("Invalid format for long");
+                    }
                 }
-                if (isEdit) {
-                    //editContactModel.setPhoneNumber(num);
-                }
-                //contactModel.setPhoneNumber(num);
             }
 
             @Override
@@ -160,8 +197,9 @@ public class ContactFragment extends Fragment {
             firstName.setText(editContactModel.getFirstName());
             lastName.setText(editContactModel.getLastName());
             email.setText(editContactModel.getEmail());
+            phone.setText(Long.toString(editContactModel.getPhoneNumber()));
+            contactPhoto.setImageBitmap(editContactModel.getContactIcon());
 
-            //editContact.setContactId(0);
         }
 
 
@@ -182,6 +220,17 @@ public class ContactFragment extends Fragment {
             }
         });
 
+        addPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                photoLauncher.launch(intent);
+            }
+        });
+
+
+
         return view;
     }
 
@@ -200,23 +249,44 @@ public class ContactFragment extends Fragment {
         contactDao.insert(contact);
 
         // Once added, wipes from short term data
-//        contactModel.setContactIcon(0);
-//        contactModel.setFirstName("");
-//        contactModel.setLastName("");
-//        contactModel.setEmail("");
-//        contactModel.setPhoneNumber(0L);
+        //contactModel.setContactIcon(null);
+        contactModel.setFirstName("");
+        contactModel.setLastName("");
+        contactModel.setEmail("");
+        contactModel.setPhoneNumber(0L);
     }
     public void updateContact() {
         ContactDao contactDao = initialiseDB();
         contactDao.updateFirstName(editContactModel.getContactId(), editContactModel.getFirstName());
         contactDao.updateLastName(editContactModel.getContactId(), editContactModel.getLastName());
         contactDao.updateEmail(editContactModel.getContactId(), editContactModel.getEmail());
+        contactDao.updatePhoneNumber(editContactModel.getContactId(), editContactModel.getPhoneNumber());
+        contactDao.updateContactIcon(editContactModel.getContactId(), editContactModel.getContactIcon());
 
         // Once added, wipes from short term data
-        //contactModel.setContactIcon(0);
+        editContactModel.setContactIcon(null);
         editContactModel.setFirstName("");
         editContactModel.setLastName("");
         editContactModel.setEmail("");
+        editContactModel.setPhoneNumber(0L);
     }
+
+    private final ActivityResultLauncher<Intent> photoLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    Bitmap image = (Bitmap) data.getExtras().get("data");
+                    if (image != null) {
+                        contactPhoto.setImageBitmap(image);
+                        if (isEdit) {
+                            editContactModel.setContactIcon(image);
+                        }
+                        contactModel.setContactIcon(image);
+
+                    }
+                }
+            }
+    );
 
 }

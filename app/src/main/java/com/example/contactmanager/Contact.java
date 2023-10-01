@@ -1,5 +1,7 @@
 package com.example.contactmanager;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.ViewModel;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -29,7 +31,7 @@ public class Contact {
     private String notes;
 
     @ColumnInfo(name = "image")
-    private int image;
+    private Bitmap image;
 
 
     public long getId() {
@@ -80,10 +82,10 @@ public class Contact {
         this.notes = value;
     }
 
-    public int getImage() {
+    public Bitmap getImage() {
         return image;
     }
-    public void setImage(int value) {
+    public void setImage(Bitmap value) {
         this.image = value;
     }
 }

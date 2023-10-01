@@ -30,7 +30,7 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
     @Override
     public void onBindViewHolder(@NonNull EditDeleteContactVH holder, int position) {
         Contact singleRow = data.get(position);
-        holder.contactIcon.setImageResource(singleRow.getImage());
+        holder.contactIcon.setImageBitmap(singleRow.getImage());
         holder.contactNameTextBox.setText(singleRow.getFirstName() + " " + singleRow.getLastName());
 
         /* -----------------------------------------------------------------------------------------
@@ -63,7 +63,8 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
                 editContactModel.setFirstName(singleRow.getFirstName());
                 editContactModel.setLastName(singleRow.getLastName());
                 editContactModel.setEmail(singleRow.getEmail());
-                //editContactModel.setPhoneNumber(singleRow.getPhoneNumber());
+                editContactModel.setPhoneNumber(singleRow.getPhoneNumber());
+                editContactModel.setContactIcon(singleRow.getImage());
                 editContactModel.setContactId(singleRow.getId());
 
             }

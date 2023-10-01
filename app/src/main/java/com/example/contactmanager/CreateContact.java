@@ -1,5 +1,7 @@
 package com.example.contactmanager;
 
+import android.graphics.Bitmap;
+
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,7 +12,7 @@ public class CreateContact extends ViewModel {
 
     public MutableLiveData<String> firstName; // this is the new firstName
     public MutableLiveData<String> lastName; // this is the new lastName
-    public MutableLiveData<Integer> contactIcon; // this is the userIcon
+    public MutableLiveData<Bitmap> contactIcon; // this is the userIcon
     public MutableLiveData<Long> phoneNumber; // this is the userIcon
     public MutableLiveData<String> email; // this is the new username
     public MutableLiveData<Long> contactId; // permanent userID
@@ -26,8 +28,8 @@ public class CreateContact extends ViewModel {
         lastName = new MediatorLiveData<String>();
         lastName.setValue("");
 
-        contactIcon = new MediatorLiveData<Integer>();
-        contactIcon.setValue(0);
+        contactIcon = new MediatorLiveData<Bitmap>();
+        contactIcon.setValue(null);
 
         phoneNumber = new MediatorLiveData<Long>();
         phoneNumber.setValue(0L);
@@ -62,10 +64,10 @@ public class CreateContact extends ViewModel {
         lastName.setValue(value);
     }
 
-    public int getContactIcon() {
+    public Bitmap getContactIcon() {
         return contactIcon.getValue();
     }
-    public void setContactIcon(int value) {
+    public void setContactIcon(Bitmap value) {
         contactIcon.setValue(value);
     }
 
