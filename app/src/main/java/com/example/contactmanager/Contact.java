@@ -1,5 +1,8 @@
 package com.example.contactmanager;
 
+import android.graphics.Bitmap;
+
+import androidx.lifecycle.ViewModel;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -17,6 +20,9 @@ public class Contact {
     @ColumnInfo(name = "phone_number")
     private long phoneNumber;
 
+    @ColumnInfo(name = "email")
+    private String email;
+
 
     @ColumnInfo(name = "favourite")
     private int favourite;
@@ -25,9 +31,7 @@ public class Contact {
     private String notes;
 
     @ColumnInfo(name = "image")
-    private int image;
-
-
+    private Bitmap image;
 
 
     public long getId() {
@@ -58,6 +62,13 @@ public class Contact {
         this.phoneNumber = value;
     }
 
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String value) {
+        this.email = value;
+    }
+
     public int getFavourite() {
         return favourite;
     }
@@ -71,10 +82,10 @@ public class Contact {
         this.notes = value;
     }
 
-    public int getImage() {
+    public Bitmap getImage() {
         return image;
     }
-    public void setImage(int value) {
+    public void setImage(Bitmap value) {
         this.image = value;
     }
 }
