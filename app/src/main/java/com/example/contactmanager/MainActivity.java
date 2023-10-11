@@ -9,6 +9,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
+
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram + Ryan
+     ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
     NavBarFragment navBarFragment = new NavBarFragment();
     BottomNavBar bottomNavBar = new BottomNavBar();
@@ -36,13 +41,16 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         loadContactViewFrag();
                         break;
+                    case 1:
+                        loadContactFrag();
+                        break;
                 }
             }
         });
     }
     /* -----------------------------------------------------------------------------------------
                   Author: Parakarm
-                  Description: Populates the nav bar fragment
+                  Description: Loads the contact view fragment
            ---------------------------------------------------------------------------------------- */
     private void loadContactViewFrag() {
         ViewContactsFragment contactsFragment = new ViewContactsFragment();
@@ -53,6 +61,22 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fm.beginTransaction().add(R.id.body_container, contactsFragment, "contactsFragment").commit();
+        }
+    }
+
+    /* -----------------------------------------------------------------------------------------
+                  Author: Ryan
+                  Description: Loads the contact fragment
+           ---------------------------------------------------------------------------------------- */
+    private void loadContactFrag() {
+        ContactFragment contactFragment = new ContactFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment frag = fm.findFragmentById(R.id.body_container);
+        if (frag!= null) {
+            fm.beginTransaction().replace(R.id.body_container, contactFragment, "contactFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.body_container, contactFragment, "contactFragment").commit();
         }
     }
 
