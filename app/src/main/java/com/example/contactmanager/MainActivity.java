@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         //initiate the model for navigation between pages
         navigationData = new ViewModelProvider(this).get(NavigationData.class);
         loadNavBar(); //always load the load the navigation bar on creating hte view
-        loadBottomNavBar(); //same for the bottom nav bar
         selectViewFragment(); //this function decides which page to render
     }
 
@@ -92,9 +91,5 @@ public class MainActivity extends AppCompatActivity {
                    Author: Parakarm
                    Description: Populates the bottom nav bar fragment
             ---------------------------------------------------------------------------------------- */
-    private void loadBottomNavBar() {
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().add(R.id.bottom_navBar_container, bottomNavBar, "bottomNavBar").commit();
-    }
 
 }

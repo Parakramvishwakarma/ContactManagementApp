@@ -69,6 +69,9 @@ public class ContactFragment extends Fragment {
 
         // Set isEdit boolean
         isEdit = editContactModel.getContactId() != 0;
+        System.out.println("Am I editing: " + isEdit);
+        System.out.println( "The name is : " + editContactModel.getContactId());
+
 
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
@@ -269,6 +272,7 @@ public class ContactFragment extends Fragment {
         editContactModel.setLastName("");
         editContactModel.setEmail("");
         editContactModel.setPhoneNumber(0L);
+        editContactModel.setContactId(0);
     }
 
     private final ActivityResultLauncher<Intent> photoLauncher = registerForActivityResult(

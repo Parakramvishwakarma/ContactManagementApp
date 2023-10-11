@@ -50,6 +50,7 @@ public class CreateContact extends ViewModel {
         contactCount.setValue(0);
     }
 
+
     public String getFirstName() {
         return firstName.getValue();
     }

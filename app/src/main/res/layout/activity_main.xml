@@ -36,19 +36,19 @@
         app:layout_constraintTop_toBottomOf="@id/navBar_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navBar_container">
+        app:layout_constraintBottom_toBottomOf="parent">
     </FrameLayout>
 
-<!--    This the contaciner for bottom layout-->
-    <FrameLayout
-        android:id="@+id/bottom_navBar_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </FrameLayout>
+<!--&lt;!&ndash;    This the contaciner for bottom layout&ndash;&gt;-->
+<!--    <FrameLayout-->
+<!--        android:id="@+id/bottom_navBar_container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:minHeight="40dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent">-->
+<!--    </FrameLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
