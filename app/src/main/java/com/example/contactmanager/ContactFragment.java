@@ -6,6 +6,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -248,11 +252,20 @@ public class ContactFragment extends Fragment {
         contact.setLastName(contactModel.getLastName());
         contact.setEmail(contactModel.getEmail());
         contact.setPhoneNumber(contactModel.getPhoneNumber());
-        contact.setImage(contactModel.getContactIcon());
+
+        if (contactModel.getContactIcon() == null) {
+            Bitmap generatedIcon = generateContactImage(contactModel.getFirstName());
+            contactModel.setContactIcon(generatedIcon);
+            contact.setImage(contactModel.getContactIcon());
+        }
+        else {
+            contact.setImage(contactModel.getContactIcon());
+        }
+
         contactDao.insert(contact);
 
         // Once added, wipes from short term data
-        //contactModel.setContactIcon(null);
+        contactModel.setContactIcon(null);
         contactModel.setFirstName("");
         contactModel.setLastName("");
         contactModel.setEmail("");
@@ -273,6 +286,13 @@ public class ContactFragment extends Fragment {
         editContactModel.setEmail("");
         editContactModel.setPhoneNumber(0L);
         editContactModel.setContactId(0);
+
+        // Once added, wipes from short term data
+        contactModel.setContactIcon(null);
+        contactModel.setFirstName("");
+        contactModel.setLastName("");
+        contactModel.setEmail("");
+        contactModel.setPhoneNumber(0L);
     }
 
     private final ActivityResultLauncher<Intent> photoLauncher = registerForActivityResult(
@@ -292,5 +312,41 @@ public class ContactFragment extends Fragment {
                 }
             }
     );
+
+    /* -----------------------------------------------------------------------------------------
+            Function: generateContactImage
+            Author: Ryan
+            Description: If no user photo is chosen, we will generate one with a random RGB colour
+                background and the first letter of their first name.
+         ---------------------------------------------------------------------------------------- */
+    public Bitmap generateContactImage(String name) {
+
+        // We can generate a random background colour for the icon
+        int r = (int) (Math.random() * 256);
+        int g = (int) (Math.random() * 256);
+        int b = (int) (Math.random() * 256);
+
+        int backgroundColor = Color.rgb(r, g, b); // Defines the colour by mapping to RGB
+
+        // Creates the Bitmap with the given color background
+        Bitmap contactImage = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(contactImage);
+        canvas.drawColor(backgroundColor);
+
+        // Puts first letter of the name on the Bitmap
+        Paint textPaint = new Paint();
+        textPaint.setColor(Color.WHITE); // Text color
+        textPaint.setTextSize(40); // Text size
+
+        // Calculates the position to center the text
+        Rect bounds = new Rect();
+        textPaint.getTextBounds(name, 0, 1, bounds);
+        int x = (contactImage.getWidth() - bounds.width()) / 2;
+        int y = (contactImage.getHeight() + bounds.height()) / 2;
+
+        canvas.drawText(name.substring(0, 1).toUpperCase(), x, y, textPaint);
+
+        return contactImage;
+    }
 
 }
