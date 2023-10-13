@@ -17,6 +17,7 @@ public class EditDeleteContactVH extends RecyclerView.ViewHolder  {
 
     public EditDeleteContactVH(@NonNull View itemView, ViewGroup parent) {
         super(itemView);
+        // Define the content inside the view holder
         contactIcon = itemView.findViewById(R.id.contact_icon);
         contactNameTextBox = itemView.findViewById(R.id.contact_name);
         contactEditButton = itemView.findViewById(R.id.editButton);

@@ -20,6 +20,10 @@ import java.util.List;
 
 public class ViewContactsFragment extends Fragment {
 
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram + Ryan
+     ---------------------------------------------------------------------------------------- */
     private NavigationData navigationData;
     private EditContact editContactModel;
     private ContactData contactModel;
@@ -103,6 +107,11 @@ public class ViewContactsFragment extends Fragment {
         return view;
     }
 
+    /* -----------------------------------------------------------------------------------------
+        Function: filterList()
+        Author: Parakram
+        Description: TODO
+     ---------------------------------------------------------------------------------------- */
     private void filterList(String text) {
         List<Contact> filteredList =  new ArrayList<Contact>();
         for (Contact contact: data) {
@@ -121,12 +130,23 @@ public class ViewContactsFragment extends Fragment {
 
     }
 
+    /* -----------------------------------------------------------------------------------------
+        Function: getContactData()
+        Author: Parakram
+        Description: TODO
+     ---------------------------------------------------------------------------------------- */
     public List<Contact> getContactData() {
         ContactDao contactDao = initialiseDB();
         data = null;
         data = contactDao.getAllContacts();
         return data;
     }
+
+    /* -----------------------------------------------------------------------------------------
+        Function: initialiseDB
+        Author: Ryan
+        Description: Initialises the contact database
+     ---------------------------------------------------------------------------------------- */
     public ContactDao initialiseDB() {
         return ContactDbInstance.getDatabase(getContext()).contactDao();
     }

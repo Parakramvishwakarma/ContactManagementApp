@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
      ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
     NavBarFragment navBarFragment = new NavBarFragment();
-    BottomNavBar bottomNavBar = new BottomNavBar();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /* -----------------------------------------------------------------------------------------
-                  Author: Parakrm
+                  Author: Parakram
                   Description: Populates the nav bar fragment
            ---------------------------------------------------------------------------------------- */
     private void selectViewFragment(){
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     /* -----------------------------------------------------------------------------------------
-                  Author: Parakarm
+                  Author: Parakram
                   Description: Loads the contact view fragment
            ---------------------------------------------------------------------------------------- */
     private void loadContactViewFrag() {
@@ -80,16 +79,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* -----------------------------------------------------------------------------------------
-                 Author: Parakarm
+                 Author: Parakram
                  Description: Populates the nav bar fragment
           ---------------------------------------------------------------------------------------- */
     private void loadNavBar() {
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().add(R.id.navBar_container, navBarFragment, "navBarFragment").commit();
     }
-    /* -----------------------------------------------------------------------------------------
-                   Author: Parakarm
-                   Description: Populates the bottom nav bar fragment
-            ---------------------------------------------------------------------------------------- */
-
 }

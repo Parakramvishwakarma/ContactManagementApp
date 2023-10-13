@@ -57,13 +57,8 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
             public void onClick(View view) {
                 navModel.setClickedValue(1);
                 navModel.setHistoricalClickedValue(1);
-//                System.out.println("RDebug CONTACT DATA - First Name: " + singleRow.getFirstName());
-//                System.out.println("RDebug CONTACT DATA - Last Name: " + singleRow.getLastName());
-//                System.out.println("RDebug CONTACT DATA - Email: " + singleRow.getEmail());
-//                System.out.println("RDebug CONTACT DATA - Phone: " + singleRow.getPhoneNumber());
-//                System.out.println("RDebug CONTACT DATA - ID: " + singleRow.getId());
-//                System.out.println("RDebug CONTACT DATA - Nav: " + navModel.getClickedValue());
 
+                // Sets the data in the adapter from the view holder
                 editContactModel.setFirstName(singleRow.getFirstName());
                 editContactModel.setLastName(singleRow.getLastName());
                 editContactModel.setEmail(singleRow.getEmail());
@@ -76,6 +71,11 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
     }
 
 
+    /* -----------------------------------------------------------------------------------------
+            Function: deleteContact()
+            Author: Ryan
+            Description: Deletes the contact from the view holder
+     ---------------------------------------------------------------------------------------- */
     public void deleteContact(int index, long id, EditDeleteContactVH holder, Contact singleRow) {
         editContactModel.setDeleteContactPosition(holder.getAdapterPosition());
         editContactModel.setDeleteContactId(id);

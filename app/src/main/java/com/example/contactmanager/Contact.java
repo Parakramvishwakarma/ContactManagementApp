@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 @Entity(tableName = "contacts")
 public class Contact {
-    // Databse for contacts
+    // Database for contacts
     @PrimaryKey(autoGenerate = true)
     private long id;
     @ColumnInfo(name = "first_name")

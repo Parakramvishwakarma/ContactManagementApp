@@ -9,6 +9,7 @@ public class ContactDbInstance {
 
     public static ContactDatabase getDatabase(Context context) {
         if (database == null) {
+            // Creates a room database for the contacts
             database = Room.databaseBuilder(context,
                             ContactDatabase.class, "app_database")
                     .allowMainThreadQueries()
