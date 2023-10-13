@@ -38,8 +38,6 @@ public class NavBarFragment extends Fragment {
      ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
     private ImageButton backButton, addButton, importButton;
-    byte[] photo = null;
-    Bitmap contactPhoto = null;
     CreateContact contactModel;
     EditContact editContactModel;
     int contactId;
@@ -116,7 +114,7 @@ public class NavBarFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: Import Click Listener
             Author: Ryan
-            Description: Navigates to ...
+            Description: Checks user permissions and begins contact selector
          ---------------------------------------------------------------------------------------- */
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +133,11 @@ public class NavBarFragment extends Fragment {
             }
         });
 
+        /* -----------------------------------------------------------------------------------------
+            Function: navigationData observer
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -167,9 +170,9 @@ public class NavBarFragment extends Fragment {
                 Uri contactUri = data.getData();
                 contactId = getContactIdFromUri(contactUri);
 
-                // Use the contactUri to retrieve contact details
                 retrieveName();
 
+                // Checks if the name retrieved matches any contacts in the data base
                 if(isDuplicateContact(contactModel.getFirstName(), contactModel.getLastName()) == false) {
                     retrievePhoneNumber();
                     retrieveEmail();
@@ -186,7 +189,12 @@ public class NavBarFragment extends Fragment {
             }
         }
     }
-    // Helper method to extract contact ID from contactUri
+
+    /* -----------------------------------------------------------------------------------------
+        Function: getContactIdFromUri()
+        Author: Ryan
+        Description: Extracts the contact ID from contactUri
+     ---------------------------------------------------------------------------------------- */
     private int getContactIdFromUri(Uri contactUri) {
         Cursor cursor = requireContext().getContentResolver().query(
                 contactUri, null, null, null, null);
@@ -203,6 +211,11 @@ public class NavBarFragment extends Fragment {
         return -1; // Return -1 if contact ID cannot be retrieved
     }
 
+    /* -----------------------------------------------------------------------------------------
+        Function: retrieveName()
+        Author: Ryan
+        Description: Retrieves the contact name (first and last) from the users contacts app
+     ---------------------------------------------------------------------------------------- */
     private void retrieveName() {
         String firstName = "";
         String lastName = "";
@@ -243,7 +256,11 @@ public class NavBarFragment extends Fragment {
         contactModel.setLastName(lastName);
     }
 
-
+    /* -----------------------------------------------------------------------------------------
+        Function: retrievePhoneNumber()
+        Author: Ryan
+        Description: Retrieves the contact phone number from the users contacts app
+     ---------------------------------------------------------------------------------------- */
     private void retrievePhoneNumber() {
         String result = "";
         Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
@@ -278,6 +295,11 @@ public class NavBarFragment extends Fragment {
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+        Function: retrieveEmail()
+        Author: Ryan
+        Description: Retrieves the contact email from the users contacts app
+     ---------------------------------------------------------------------------------------- */
     private void retrieveEmail() {
         String result = "";
         Uri emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
@@ -308,6 +330,12 @@ public class NavBarFragment extends Fragment {
 
         contactModel.setEmail(result);
     }
+
+    /* -----------------------------------------------------------------------------------------
+        Function: retrieveImage()
+        Author: Ryan
+        Description: Retrieves the contact image from the users contacts app
+     ---------------------------------------------------------------------------------------- */
     private void retrieveImage() {
         Bitmap contactPhoto = null;
         String[] projection = new String[] {
@@ -349,11 +377,21 @@ public class NavBarFragment extends Fragment {
         contactModel.setContactIcon(contactPhoto);
     }
 
-
+    /* -----------------------------------------------------------------------------------------
+            Function: initialiseDB
+            Author: Ryan
+            Description: Initialises the contact database
+         ---------------------------------------------------------------------------------------- */
     public ContactDao initialiseDB() {
         return ContactDbInstance.getDatabase(getContext()).contactDao();
     }
 
+    /* -----------------------------------------------------------------------------------------
+        Function: saveContact
+        Author: Ryan
+        Description: Updates the contact model by retrieving all data from the CreateContact
+            view model. Cleans setters and getters after saving.
+     ---------------------------------------------------------------------------------------- */
     public void saveContact() {
         ContactDao contactDao = initialiseDB();
         Contact contact = new Contact();
