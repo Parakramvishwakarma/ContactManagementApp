@@ -18,7 +18,7 @@ public class Contact {
     private String lastName;
 
     @ColumnInfo(name = "phone_number")
-    private long phoneNumber;
+    private String phoneNumber;
 
     @ColumnInfo(name = "email")
     private String email;
@@ -55,10 +55,10 @@ public class Contact {
 
     public void setLastName(String lastName) { this.lastName = lastName;}
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
-    public void setPhoneNumber(long value) {
+    public void setPhoneNumber(String value) {
         this.phoneNumber = value;
     }
 

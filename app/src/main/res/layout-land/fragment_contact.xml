@@ -26,43 +26,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.40" />
+        app:layout_constraintGuide_percent="0.55" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.65" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_percent="0.75" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizontal6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.85" />
+
 
     <TextView
         android:id="@+id/contactName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Contact"
-        android:textSize="20sp"
         android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/contactPhoto"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal1" />
@@ -73,9 +82,9 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#00000000"
         android:src="@drawable/user_profile"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal5"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintBottom_toTopOf="@id/addPhotoButton"
         app:layout_constraintTop_toBottomOf="@+id/contactName" />
 
     <Button
@@ -84,10 +93,10 @@
         android:layout_height="wrap_content"
         android:text="Add Photo"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal2"
+        app:layout_constraintTop_toTopOf="@+id/contactPhoto"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toBottomOf="@+id/contactPhoto" />
+        app:layout_constraintStart_toEndOf="@+id/contactPhoto"
+        app:layout_constraintBottom_toBottomOf="@+id/contactPhoto" />
 
     <EditText
         android:id="@+id/firstName"
@@ -95,9 +104,10 @@
         android:layout_height="wrap_content"
         android:hint="First Name: "
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal2"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal2" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal5" />
 
     <EditText
         android:id="@+id/lastName"
@@ -108,7 +118,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal3"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toBottomOf="@+id/firstName" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal2" />
 
     <EditText
         android:id="@+id/emailBox"
@@ -129,7 +139,7 @@
         android:textSize="20sp"
         android:inputType="number"
         android:digits="0123456789"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal5"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal6"
         app:layout_constraintEnd_toEndOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical1"
         app:layout_constraintTop_toTopOf="@+id/guideline_horizontal4" />
@@ -141,9 +151,7 @@
         android:layout_height="wrap_content"
         android:text="Save"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical2"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical1"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal5" />
+        app:layout_constraintTop_toTopOf="@id/guideline_horizontal1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
