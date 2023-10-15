@@ -1,6 +1,13 @@
 package com.example.contactmanager;
 
 import android.app.Activity;
+
+import com.example.contactmanager.ContactDao;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.ContentUris;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,6 +19,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -38,6 +49,8 @@ public class NavBarFragment extends Fragment {
      ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
     private ImageButton backButton, addButton, importButton;
+    byte[] photo = null;
+    Bitmap contactPhoto = null;
     CreateContact contactModel;
     EditContact editContactModel;
     int contactId;
@@ -130,6 +143,8 @@ public class NavBarFragment extends Fragment {
                     openContactsPicker();
                 }
 
+                navigationData.setClickedValue(2);
+                navigationData.setHistoricalClickedValue(2);
             }
         });
 
@@ -156,6 +171,18 @@ public class NavBarFragment extends Fragment {
         return view;
     }
 
+
+    private final ActivityResultLauncher<Intent> pickContactLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+
+                }
+            }
+    );
+
+
     private void openContactsPicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, CONTACT_PICKER_REQUEST);
@@ -169,6 +196,7 @@ public class NavBarFragment extends Fragment {
             if (data != null) {
                 Uri contactUri = data.getData();
                 contactId = getContactIdFromUri(contactUri);
+
 
                 retrieveName();
 
@@ -189,6 +217,7 @@ public class NavBarFragment extends Fragment {
             }
         }
     }
+
 
     /* -----------------------------------------------------------------------------------------
         Function: getContactIdFromUri()
@@ -211,11 +240,13 @@ public class NavBarFragment extends Fragment {
         return -1; // Return -1 if contact ID cannot be retrieved
     }
 
+
     /* -----------------------------------------------------------------------------------------
         Function: retrieveName()
         Author: Ryan
         Description: Retrieves the contact name (first and last) from the users contacts app
      ---------------------------------------------------------------------------------------- */
+
     private void retrieveName() {
         String firstName = "";
         String lastName = "";
@@ -295,6 +326,7 @@ public class NavBarFragment extends Fragment {
         }
     }
 
+
     /* -----------------------------------------------------------------------------------------
         Function: retrieveEmail()
         Author: Ryan
@@ -336,6 +368,7 @@ public class NavBarFragment extends Fragment {
         Author: Ryan
         Description: Retrieves the contact image from the users contacts app
      ---------------------------------------------------------------------------------------- */
+
     private void retrieveImage() {
         Bitmap contactPhoto = null;
         String[] projection = new String[] {
@@ -377,6 +410,7 @@ public class NavBarFragment extends Fragment {
         contactModel.setContactIcon(contactPhoto);
     }
 
+
     /* -----------------------------------------------------------------------------------------
             Function: initialiseDB
             Author: Ryan
@@ -385,6 +419,7 @@ public class NavBarFragment extends Fragment {
     public ContactDao initialiseDB() {
         return ContactDbInstance.getDatabase(getContext()).contactDao();
     }
+
 
     /* -----------------------------------------------------------------------------------------
         Function: saveContact
