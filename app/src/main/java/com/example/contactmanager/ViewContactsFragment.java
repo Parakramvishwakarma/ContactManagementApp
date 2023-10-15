@@ -110,7 +110,7 @@ public class ViewContactsFragment extends Fragment {
     /* -----------------------------------------------------------------------------------------
         Function: filterList()
         Author: Parakram
-        Description: TODO
+        Description: Filter by the search key of the search element
      ---------------------------------------------------------------------------------------- */
     private void filterList(String text) {
         List<Contact> filteredList =  new ArrayList<Contact>();
@@ -133,7 +133,7 @@ public class ViewContactsFragment extends Fragment {
     /* -----------------------------------------------------------------------------------------
         Function: getContactData()
         Author: Parakram
-        Description: TODO
+        Description: get all contact
      ---------------------------------------------------------------------------------------- */
     public List<Contact> getContactData() {
         ContactDao contactDao = initialiseDB();

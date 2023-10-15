@@ -200,7 +200,7 @@ public class NavBarFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: navigationData observer
             Author: Parakram
-            Description: TODO
+            Description: To sort what icons are displayed in different fragments
          ---------------------------------------------------------------------------------------- */
         navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
             @Override
