@@ -50,6 +50,15 @@ public class EditContact extends ViewModel {
         contactCount.setValue(0);
     }
 
+    public void resetEditContact() {
+        firstName.setValue("");
+        lastName.setValue("");
+        contactIcon.setValue(null);
+        phoneNumber.setValue(0L);
+        email.setValue("");
+        contactId.setValue(0L);
+    }
+
     public String getFirstName() {
         return firstName.getValue();
     }

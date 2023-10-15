@@ -2,6 +2,7 @@ package com.example.contactmanager;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +21,12 @@ import java.util.List;
 public class ViewContactsFragment extends Fragment {
 
     private NavigationData navigationData;
-    private EditText searchBar;
     private EditContact editContactModel;
     private ContactData contactModel;
     private List<Contact> data;
+    EditDeleteContactAdapter editDeleteContactAdapter;
 
+    private SearchView searchView;
     private RecyclerView recyclerView;
 
     public ViewContactsFragment() {
@@ -46,7 +49,20 @@ public class ViewContactsFragment extends Fragment {
 
         //get the elements
         recyclerView = view.findViewById(R.id.users_recycler);
-        searchBar = view.findViewById(R.id.users_search);
+        searchView = view.findViewById(R.id.users_search);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return false;
+            }
+        });
         //set the Gridlayout manager for the recycler view
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1,
                 GridLayoutManager.VERTICAL, false);
@@ -54,7 +70,7 @@ public class ViewContactsFragment extends Fragment {
         //get the data from te DB
         data = getContactData();
         //set the data in the adapter
-        EditDeleteContactAdapter editDeleteContactAdapter = new EditDeleteContactAdapter(data, navigationData, editContactModel, contactModel);
+        editDeleteContactAdapter = new EditDeleteContactAdapter(data, navigationData, editContactModel, contactModel);
         recyclerView.setAdapter(editDeleteContactAdapter);
 
         /* -----------------------------------------------------------------------------------------
@@ -85,6 +101,24 @@ public class ViewContactsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void filterList(String text) {
+        List<Contact> filteredList =  new ArrayList<Contact>();
+        for (Contact contact: data) {
+            String contactName = contact.getFirstName() + " " + contact.getLastName();
+            if (contactName.toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(contact);
+            }
+        }
+
+        if (filteredList.isEmpty()) {
+            Toast.makeText(getActivity(), "No related contacts", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            editDeleteContactAdapter.setFilteredData(filteredList);
+        }
+
     }
 
     public List<Contact> getContactData() {

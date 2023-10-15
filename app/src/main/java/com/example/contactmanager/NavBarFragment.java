@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.ContactsContract;
@@ -114,6 +115,7 @@ public class NavBarFragment extends Fragment {
                 if (navigationData.getHistoricalClickedValue() == 1) {
                     navigationData.setClickedValue(0);
                     navigationData.setHistoricalClickedValue(0);
+                    editContactModel.resetEditContact();
                 }
             }
         });
@@ -137,8 +139,27 @@ public class NavBarFragment extends Fragment {
                     openContactsPicker();
                 }
 
+
+                navigationData.setClickedValue(2);
+                navigationData.setHistoricalClickedValue(2);
+
             }
         });
+
+        navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer == 0) {
+                    backButton.setVisibility(View.GONE);
+                    addButton.setVisibility(View.VISIBLE);
+                    importButton.setVisibility(View.VISIBLE);
+                }
+                if (integer == 1) {
+                    backButton.setVisibility(View.VISIBLE);
+                    addButton.setVisibility(View.GONE);
+                    importButton.setVisibility(View.GONE);
+                }
+            }});
 
         return view;
     }

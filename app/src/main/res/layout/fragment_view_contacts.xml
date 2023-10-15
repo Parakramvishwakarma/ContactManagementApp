@@ -22,16 +22,17 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintEnd_toEndOf="parent"/>-->
 
-    <EditText
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/users_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search Contacts"
         android:layout_marginTop="10dp"
         android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:queryHint="Search Contacts"
+        app:iconifiedByDefault="false"/>
 
 
     <!-- height = 0dp. Allows the recycler viewer to dynamically change based on data size -->

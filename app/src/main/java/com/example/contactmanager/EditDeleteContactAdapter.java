@@ -13,6 +13,10 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
     private NavigationData navModel;
     private EditContact editContactModel;
 
+    public void setFilteredData (List<Contact> filteredData) {
+        this.data = filteredData;
+        notifyDataSetChanged();
+    }
     public EditDeleteContactAdapter(List<Contact> data, NavigationData navModel, EditContact editContactModel, ContactData contactModel){
         this.data = data;
         this.navModel = navModel;
