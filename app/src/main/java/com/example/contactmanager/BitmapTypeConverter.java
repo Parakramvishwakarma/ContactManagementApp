@@ -8,6 +8,12 @@ import androidx.room.TypeConverter;
 import java.io.ByteArrayOutputStream;
 
 public class BitmapTypeConverter {
+
+    /* -----------------------------------------------------------------------------------------
+              Function: fromBitmap()
+              Author: Ryan
+              Description: Converts the bitmap to a byte array
+       ---------------------------------------------------------------------------------------- */
     @TypeConverter
     public static byte[] fromBitmap(Bitmap bitmap) {
         if (bitmap == null) {
@@ -18,6 +24,11 @@ public class BitmapTypeConverter {
         return outputStream.toByteArray();
     }
 
+    /* -----------------------------------------------------------------------------------------
+              Function: toBitmap()
+              Author: Ryan
+              Description: Converts the byte array to a bitmap
+       ---------------------------------------------------------------------------------------- */
     @TypeConverter
     public static Bitmap toBitmap(byte[] byteArray) {
         if (byteArray == null) {

@@ -49,7 +49,6 @@ public class ContactFragment extends Fragment {
     private Button saveContactButton, addPhotoButton;
     private Long num;
     private boolean isEdit;
-    private File photoFile;
     public ContactFragment() {
         // Required empty public constructor
     }
@@ -73,8 +72,6 @@ public class ContactFragment extends Fragment {
 
         // Set isEdit boolean
         isEdit = editContactModel.getContactId() != 0;
-        System.out.println("Am I editing: " + isEdit);
-        System.out.println( "The name is : " + editContactModel.getContactId());
 
 
         /* -----------------------------------------------------------------------------------------
@@ -100,6 +97,7 @@ public class ContactFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: firstName Text Change Listener
             Author: Ryan
+            Description: Sets the first name
          ---------------------------------------------------------------------------------------- */
         firstName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -121,6 +119,7 @@ public class ContactFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: lastName Text Change Listener
             Author: Ryan
+            Description: Sets the last name
          ---------------------------------------------------------------------------------------- */
         lastName.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -141,6 +140,7 @@ public class ContactFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: email Text Change Listener
             Author: Ryan
+            Description: Sets the email
          ---------------------------------------------------------------------------------------- */
         email.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -160,6 +160,7 @@ public class ContactFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: phone Text Change Listener
             Author: Ryan
+            Description: Sets the phone number and checks if it is valid
          ---------------------------------------------------------------------------------------- */
         phone.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -200,6 +201,7 @@ public class ContactFragment extends Fragment {
         });
 
         if (isEdit) {
+            // Sets the relevant data fields to their existing data parameters
             contactName.setText(editContactModel.getFirstName() + " " + editContactModel.getLastName());
             firstName.setText(editContactModel.getFirstName());
             lastName.setText(editContactModel.getLastName());
@@ -209,15 +211,21 @@ public class ContactFragment extends Fragment {
 
         }
 
-
+        /* -----------------------------------------------------------------------------------------
+            Function: saveContactButton click listener
+            Author: Ryan
+            Description: saves/updates the contact data
+         ---------------------------------------------------------------------------------------- */
         saveContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (isEdit) {
+                    // If we are editing the contact, update
                     updateContact();
                 }
                 else {
+                    // If we are creating a new contact, save and increment contact count
                     saveContact();
                     int contactCount = contactModel.getContactCount();
                     contactModel.setContactCount(contactCount + 1);
@@ -227,6 +235,11 @@ public class ContactFragment extends Fragment {
             }
         });
 
+        /* -----------------------------------------------------------------------------------------
+            Function: addPhotoButton click listener
+            Author: Ryan
+            Description: Launches the photo launcher intent
+         ---------------------------------------------------------------------------------------- */
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -241,10 +254,21 @@ public class ContactFragment extends Fragment {
         return view;
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: initialiseDB
+            Author: Ryan
+            Description: Initialises the contact database
+         ---------------------------------------------------------------------------------------- */
     public ContactDao initialiseDB() {
         return ContactDbInstance.getDatabase(getContext()).contactDao();
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: saveContact
+            Author: Ryan
+            Description: Updates the contact model by retrieving all data from the CreateContact
+                view model. Cleans setters and getters after saving.
+         ---------------------------------------------------------------------------------------- */
     public void saveContact() {
         ContactDao contactDao = initialiseDB();
         Contact contact = new Contact();
@@ -271,6 +295,13 @@ public class ContactFragment extends Fragment {
         contactModel.setEmail("");
         contactModel.setPhoneNumber(0L);
     }
+
+    /* -----------------------------------------------------------------------------------------
+            Function: updateContact
+            Author: Ryan
+            Description: Updates the contact model by retrieving all data from the EditContact view
+                model. Cleans setters and getters after saving.
+         ---------------------------------------------------------------------------------------- */
     public void updateContact() {
         ContactDao contactDao = initialiseDB();
         contactDao.updateFirstName(editContactModel.getContactId(), editContactModel.getFirstName());
@@ -286,8 +317,20 @@ public class ContactFragment extends Fragment {
         editContactModel.setEmail("");
         editContactModel.setPhoneNumber(0L);
         editContactModel.setContactId(0);
+
+        // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
+        contactModel.setContactIcon(null);
+        contactModel.setFirstName("");
+        contactModel.setLastName("");
+        contactModel.setEmail("");
+        contactModel.setPhoneNumber(0L);
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: photoLauncher
+            Author: Ryan
+            Description: Launches the intent for the camera app and saves it as a bitmap
+         ---------------------------------------------------------------------------------------- */
     private final ActivityResultLauncher<Intent> photoLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {

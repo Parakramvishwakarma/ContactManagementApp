@@ -1,10 +1,13 @@
 package com.example.contactmanager;
 
+import android.app.Activity;
+
 import com.example.contactmanager.ContactDao;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentUris;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -20,6 +23,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -123,7 +127,7 @@ public class NavBarFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: Import Click Listener
             Author: Ryan
-            Description: Navigates to ...
+            Description: Checks user permissions and begins contact selector
          ---------------------------------------------------------------------------------------- */
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,20 +136,23 @@ public class NavBarFragment extends Fragment {
                         android.Manifest.permission.READ_CONTACTS)
                         != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(requireActivity(),
-                            new String[]{Manifest.permission.READ_CONTACTS},
+                            new String[]{android.Manifest.permission.READ_CONTACTS},
                             REQUEST_READ_CONTACT_PERMISSION);
                 }
                 else {
                     openContactsPicker();
                 }
 
-
                 navigationData.setClickedValue(2);
                 navigationData.setHistoricalClickedValue(2);
-
             }
         });
 
+        /* -----------------------------------------------------------------------------------------
+            Function: navigationData observer
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -164,6 +171,7 @@ public class NavBarFragment extends Fragment {
         return view;
     }
 
+
     private final ActivityResultLauncher<Intent> pickContactLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -173,6 +181,7 @@ public class NavBarFragment extends Fragment {
                 }
             }
     );
+
 
     private void openContactsPicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
@@ -188,9 +197,10 @@ public class NavBarFragment extends Fragment {
                 Uri contactUri = data.getData();
                 contactId = getContactIdFromUri(contactUri);
 
-                // Use the contactUri to retrieve contact details
+
                 retrieveName();
 
+                // Checks if the name retrieved matches any contacts in the data base
                 if(isDuplicateContact(contactModel.getFirstName(), contactModel.getLastName()) == false) {
                     retrievePhoneNumber();
                     retrieveEmail();
@@ -207,7 +217,13 @@ public class NavBarFragment extends Fragment {
             }
         }
     }
-    // Helper method to extract contact ID from contactUri
+
+
+    /* -----------------------------------------------------------------------------------------
+        Function: getContactIdFromUri()
+        Author: Ryan
+        Description: Extracts the contact ID from contactUri
+     ---------------------------------------------------------------------------------------- */
     private int getContactIdFromUri(Uri contactUri) {
         Cursor cursor = requireContext().getContentResolver().query(
                 contactUri, null, null, null, null);
@@ -223,6 +239,13 @@ public class NavBarFragment extends Fragment {
         }
         return -1; // Return -1 if contact ID cannot be retrieved
     }
+
+
+    /* -----------------------------------------------------------------------------------------
+        Function: retrieveName()
+        Author: Ryan
+        Description: Retrieves the contact name (first and last) from the users contacts app
+     ---------------------------------------------------------------------------------------- */
 
     private void retrieveName() {
         String firstName = "";
@@ -264,7 +287,11 @@ public class NavBarFragment extends Fragment {
         contactModel.setLastName(lastName);
     }
 
-
+    /* -----------------------------------------------------------------------------------------
+        Function: retrievePhoneNumber()
+        Author: Ryan
+        Description: Retrieves the contact phone number from the users contacts app
+     ---------------------------------------------------------------------------------------- */
     private void retrievePhoneNumber() {
         String result = "";
         Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
@@ -299,6 +326,12 @@ public class NavBarFragment extends Fragment {
         }
     }
 
+
+    /* -----------------------------------------------------------------------------------------
+        Function: retrieveEmail()
+        Author: Ryan
+        Description: Retrieves the contact email from the users contacts app
+     ---------------------------------------------------------------------------------------- */
     private void retrieveEmail() {
         String result = "";
         Uri emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
@@ -329,6 +362,13 @@ public class NavBarFragment extends Fragment {
 
         contactModel.setEmail(result);
     }
+
+    /* -----------------------------------------------------------------------------------------
+        Function: retrieveImage()
+        Author: Ryan
+        Description: Retrieves the contact image from the users contacts app
+     ---------------------------------------------------------------------------------------- */
+
     private void retrieveImage() {
         Bitmap contactPhoto = null;
         String[] projection = new String[] {
@@ -371,10 +411,22 @@ public class NavBarFragment extends Fragment {
     }
 
 
+    /* -----------------------------------------------------------------------------------------
+            Function: initialiseDB
+            Author: Ryan
+            Description: Initialises the contact database
+         ---------------------------------------------------------------------------------------- */
     public ContactDao initialiseDB() {
         return ContactDbInstance.getDatabase(getContext()).contactDao();
     }
 
+
+    /* -----------------------------------------------------------------------------------------
+        Function: saveContact
+        Author: Ryan
+        Description: Updates the contact model by retrieving all data from the CreateContact
+            view model. Cleans setters and getters after saving.
+     ---------------------------------------------------------------------------------------- */
     public void saveContact() {
         ContactDao contactDao = initialiseDB();
         Contact contact = new Contact();
@@ -453,6 +505,4 @@ public class NavBarFragment extends Fragment {
         // If no duplicates are found, return false
         return false;
     }
-
-
 }
