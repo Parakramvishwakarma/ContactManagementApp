@@ -116,6 +116,22 @@ public class NavBarFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Once added, wipes from short term data
+                editContactModel.setContactIcon(null);
+                editContactModel.setFirstName("");
+                editContactModel.setLastName("");
+                editContactModel.setEmail("");
+                editContactModel.setPhoneNumber("");
+                editContactModel.setContactId(0);
+
+                // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
+                contactModel.setContactIcon(null);
+                contactModel.setFirstName("");
+                contactModel.setLastName("");
+                contactModel.setEmail("");
+                contactModel.setPhoneNumber("");
+                contactModel.setSaveToggle(0);
+
                 if (navigationData.getHistoricalClickedValue() == 1) {
                     navigationData.setClickedValue(0);
                     navigationData.setHistoricalClickedValue(0);
@@ -322,7 +338,7 @@ public class NavBarFragment extends Fragment {
         }
 
         if (!result.trim().isEmpty()) { // Check if the result is not empty
-            contactModel.setPhoneNumber(Long.parseLong(result.trim()));
+            contactModel.setPhoneNumber((result.trim()));
         }
     }
 
@@ -451,7 +467,7 @@ public class NavBarFragment extends Fragment {
         contactModel.setFirstName("");
         contactModel.setLastName("");
         contactModel.setEmail("");
-        contactModel.setPhoneNumber(0L);
+        contactModel.setPhoneNumber("");
     }
 
     /* -----------------------------------------------------------------------------------------
@@ -470,14 +486,14 @@ public class NavBarFragment extends Fragment {
         int backgroundColor = Color.rgb(r, g, b); // Defines the colour by mapping to RGB
 
         // Creates the Bitmap with the given color background
-        Bitmap contactImage = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Bitmap contactImage = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(contactImage);
         canvas.drawColor(backgroundColor);
 
         // Puts first letter of the name on the Bitmap
         Paint textPaint = new Paint();
         textPaint.setColor(Color.WHITE); // Text color
-        textPaint.setTextSize(40); // Text size
+        textPaint.setTextSize(100); // Text size
 
         // Calculates the position to center the text
         Rect bounds = new Rect();

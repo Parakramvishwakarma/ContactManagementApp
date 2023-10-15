@@ -36,7 +36,7 @@ public interface ContactDao {
     Contact getContactsByLastName(String lastName);
 
     @Query("SELECT * FROM contacts WHERE phone_number = :phoneNumber")
-    Contact getContactsByPhoneNumber(long phoneNumber);
+    Contact getContactsByPhoneNumber(String phoneNumber);
 
     @Query("SELECT * FROM contacts WHERE email = :email")
     Contact getContactsByEmail(String email);
@@ -50,7 +50,7 @@ public interface ContactDao {
     @Query("UPDATE contacts SET last_name = :lastName WHERE id = :contactId")
     void updateLastName(long contactId, String lastName);
     @Query("UPDATE contacts SET phone_number = :phoneNumber WHERE id = :contactId")
-    void updatePhoneNumber(long contactId, long phoneNumber);
+    void updatePhoneNumber(long contactId, String phoneNumber);
     @Query("UPDATE contacts SET email = :email WHERE id = :contactId")
     void updateEmail(long contactId, String email);
     @Query("UPDATE contacts SET image = :contactIcon WHERE id = :contactId")

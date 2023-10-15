@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -47,7 +48,7 @@ public class ContactFragment extends Fragment {
     private TextView contactName;
     private ImageView contactPhoto;
     private Button saveContactButton, addPhotoButton;
-    private Long num;
+    private String num;
     private boolean isEdit;
     public ContactFragment() {
         // Required empty public constructor
@@ -88,11 +89,31 @@ public class ContactFragment extends Fragment {
         addPhotoButton = view.findViewById(R.id.addPhotoButton);
         contactPhoto = view.findViewById(R.id.contactPhoto);
 
-        // Initialise defaults
-        firstName.setText("");
-        lastName.setText("");
-        email.setText("");
-        phone.setText("");
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise setTexts
+            Author: Ryan
+            Description: Maintains data across orientation changes
+         ---------------------------------------------------------------------------------------- */
+        if (contactModel.getFirstName() != null) {
+            firstName.setText(contactModel.getFirstName());
+        }
+
+        if (contactModel.getLastName() != null) {
+            lastName.setText(contactModel.getLastName());
+        }
+
+        if (contactModel.getEmail() != null) {
+            email.setText(contactModel.getEmail());
+        }
+
+        if (contactModel.getPhoneNumber() != null) {
+            phone.setText(contactModel.getPhoneNumber());
+        }
+        if (contactModel.getContactIcon() != null) {
+            contactPhoto.setImageBitmap(contactModel.getContactIcon());
+        }
+        contactModel.setSaveToggle(contactModel.getSaveToggle());
+        System.out.println("RDebug - saveToggle, Or: " + contactModel.getSaveToggle());
 
         /* -----------------------------------------------------------------------------------------
             Function: firstName Text Change Listener
@@ -181,7 +202,7 @@ public class ContactFragment extends Fragment {
                 String inputText = phone.getText().toString();
                 if (inputText != null) {
                     try {
-                        num = Long.parseLong(String.valueOf(s));
+                        num = s.toString();
                         if (isEdit) {
                             editContactModel.setPhoneNumber(num);
                         }
@@ -206,7 +227,7 @@ public class ContactFragment extends Fragment {
             firstName.setText(editContactModel.getFirstName());
             lastName.setText(editContactModel.getLastName());
             email.setText(editContactModel.getEmail());
-            phone.setText(Long.toString(editContactModel.getPhoneNumber()));
+            phone.setText(editContactModel.getPhoneNumber());
             contactPhoto.setImageBitmap(editContactModel.getContactIcon());
 
         }
@@ -225,13 +246,14 @@ public class ContactFragment extends Fragment {
                     updateContact();
                 }
                 else {
-                    // If we are creating a new contact, save and increment contact count
+                    // If we are creating a new contact, save
                     saveContact();
-                    int contactCount = contactModel.getContactCount();
-                    contactModel.setContactCount(contactCount + 1);
                 }
-                navModel.setClickedValue(0);
-                navModel.setHistoricalClickedValue(0);
+                System.out.println("RDebug - saveToggle: " + contactModel.getSaveToggle());
+                if (contactModel.getSaveToggle() == 0) {
+                    navModel.setClickedValue(0);
+                    navModel.setHistoricalClickedValue(0);
+                }
             }
         });
 
@@ -272,28 +294,69 @@ public class ContactFragment extends Fragment {
     public void saveContact() {
         ContactDao contactDao = initialiseDB();
         Contact contact = new Contact();
-        contact.setFirstName(contactModel.getFirstName());
-        contact.setLastName(contactModel.getLastName());
-        contact.setEmail(contactModel.getEmail());
-        contact.setPhoneNumber(contactModel.getPhoneNumber());
 
-        if (contactModel.getContactIcon() == null) {
-            Bitmap generatedIcon = generateContactImage(contactModel.getFirstName());
-            contactModel.setContactIcon(generatedIcon);
-            contact.setImage(contactModel.getContactIcon());
+        // Ensures data fields are filled before saving
+        if (contactModel.getFirstName() == null || contactModel.getFirstName().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
+
+        if (contactModel.getLastName() == null || contactModel.getLastName().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
+
+        if (contactModel.getEmail() == null || contactModel.getEmail().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
+
+        if (contactModel.getPhoneNumber() == null || contactModel.getPhoneNumber().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
+
+        System.out.println("RDebug - saveToggle: " + contactModel.getSaveToggle());
+        // Checks all data fields
+        if ((!contactModel.getFirstName().isEmpty() && !contactModel.getLastName().isEmpty() &&
+                !contactModel.getEmail().isEmpty() && !contactModel.getPhoneNumber().isEmpty()) &&
+                (contactModel.getFirstName() != null && contactModel.getLastName() != null &&
+                contactModel.getEmail() != null && contactModel.getPhoneNumber() != null)) {
+            System.out.println("RDebug - First Name: " + contactModel.getFirstName());
+            System.out.println("RDebug - Last Name: " + contactModel.getLastName());
+            System.out.println("RDebug - Email: " + contactModel.getEmail());
+            System.out.println("RDebug - Phone: " + contactModel.getPhoneNumber());
+            contactModel.setSaveToggle(0); // resets save toggle
+        }
+
+        if (contactModel.getSaveToggle() == 0) {
+            contact.setFirstName(contactModel.getFirstName());
+            contact.setLastName(contactModel.getLastName());
+            contact.setEmail(contactModel.getEmail());
+            contact.setPhoneNumber(contactModel.getPhoneNumber());
+
+            if (contactModel.getContactIcon() == null) {
+                Bitmap generatedIcon = generateContactImage(contactModel.getFirstName());
+                contactModel.setContactIcon(generatedIcon);
+                contact.setImage(contactModel.getContactIcon());
+            }
+            else {
+                contact.setImage(contactModel.getContactIcon());
+            }
+
+            contactDao.insert(contact);
+
+            // Increment contact count
+            int contactCount = contactModel.getContactCount();
+            contactModel.setContactCount(contactCount + 1);
+
+            // Once added, wipes from short term data
+            contactModel.setContactIcon(null);
+            contactModel.setFirstName("");
+            contactModel.setLastName("");
+            contactModel.setEmail("");
+            contactModel.setPhoneNumber("");
         }
         else {
-            contact.setImage(contactModel.getContactIcon());
+            Toast.makeText(getContext(), "Contact Fields Blank", Toast.LENGTH_SHORT).show();
         }
 
-        contactDao.insert(contact);
-
-        // Once added, wipes from short term data
-        contactModel.setContactIcon(null);
-        contactModel.setFirstName("");
-        contactModel.setLastName("");
-        contactModel.setEmail("");
-        contactModel.setPhoneNumber(0L);
     }
 
     /* -----------------------------------------------------------------------------------------
@@ -304,26 +367,62 @@ public class ContactFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
     public void updateContact() {
         ContactDao contactDao = initialiseDB();
-        contactDao.updateFirstName(editContactModel.getContactId(), editContactModel.getFirstName());
-        contactDao.updateLastName(editContactModel.getContactId(), editContactModel.getLastName());
-        contactDao.updateEmail(editContactModel.getContactId(), editContactModel.getEmail());
-        contactDao.updatePhoneNumber(editContactModel.getContactId(), editContactModel.getPhoneNumber());
-        contactDao.updateContactIcon(editContactModel.getContactId(), editContactModel.getContactIcon());
 
-        // Once added, wipes from short term data
-        editContactModel.setContactIcon(null);
-        editContactModel.setFirstName("");
-        editContactModel.setLastName("");
-        editContactModel.setEmail("");
-        editContactModel.setPhoneNumber(0L);
-        editContactModel.setContactId(0);
+        // Ensures data fields are filled before saving
+        if (editContactModel.getFirstName() == null || editContactModel.getFirstName().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
 
-        // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
-        contactModel.setContactIcon(null);
-        contactModel.setFirstName("");
-        contactModel.setLastName("");
-        contactModel.setEmail("");
-        contactModel.setPhoneNumber(0L);
+        if (editContactModel.getLastName() == null || editContactModel.getLastName().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
+
+        if (editContactModel.getEmail() == null || editContactModel.getEmail().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
+
+        if (editContactModel.getPhoneNumber() == null || editContactModel.getPhoneNumber().isEmpty()) {
+            contactModel.setSaveToggle(contactModel.getSaveToggle() + 1);
+        }
+
+        System.out.println("RDebug - saveToggle: " + contactModel.getSaveToggle());
+        // Checks all data fields
+        if ((!contactModel.getFirstName().isEmpty() && !contactModel.getLastName().isEmpty() &&
+                !contactModel.getEmail().isEmpty() && !contactModel.getPhoneNumber().isEmpty()) &&
+                (contactModel.getFirstName() != null && contactModel.getLastName() != null &&
+                        contactModel.getEmail() != null && contactModel.getPhoneNumber() != null)) {
+            System.out.println("RDebug - First Name: " + contactModel.getFirstName());
+            System.out.println("RDebug - Last Name: " + contactModel.getLastName());
+            System.out.println("RDebug - Email: " + contactModel.getEmail());
+            System.out.println("RDebug - Phone: " + contactModel.getPhoneNumber());
+            contactModel.setSaveToggle(0); // resets save toggle
+        }
+
+        if (contactModel.getSaveToggle() == 0) {
+            contactDao.updateFirstName(editContactModel.getContactId(), editContactModel.getFirstName());
+            contactDao.updateLastName(editContactModel.getContactId(), editContactModel.getLastName());
+            contactDao.updateEmail(editContactModel.getContactId(), editContactModel.getEmail());
+            contactDao.updatePhoneNumber(editContactModel.getContactId(), editContactModel.getPhoneNumber());
+            contactDao.updateContactIcon(editContactModel.getContactId(), editContactModel.getContactIcon());
+
+            // Once added, wipes from short term data
+            editContactModel.setContactIcon(null);
+            editContactModel.setFirstName("");
+            editContactModel.setLastName("");
+            editContactModel.setEmail("");
+            editContactModel.setPhoneNumber("");
+            editContactModel.setContactId(0);
+
+            // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
+            contactModel.setContactIcon(null);
+            contactModel.setFirstName("");
+            contactModel.setLastName("");
+            contactModel.setEmail("");
+            contactModel.setPhoneNumber("");
+        }
+        else {
+            Toast.makeText(getContext(), "Contact Fields Blank", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /* -----------------------------------------------------------------------------------------
@@ -365,14 +464,14 @@ public class ContactFragment extends Fragment {
         int backgroundColor = Color.rgb(r, g, b); // Defines the colour by mapping to RGB
 
         // Creates the Bitmap with the given color background
-        Bitmap contactImage = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+        Bitmap contactImage = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(contactImage);
         canvas.drawColor(backgroundColor);
 
         // Puts first letter of the name on the Bitmap
         Paint textPaint = new Paint();
         textPaint.setColor(Color.WHITE); // Text color
-        textPaint.setTextSize(40); // Text size
+        textPaint.setTextSize(100); // Text size
 
         // Calculates the position to center the text
         Rect bounds = new Rect();

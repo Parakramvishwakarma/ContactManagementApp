@@ -13,12 +13,13 @@ public class CreateContact extends ViewModel {
     public MutableLiveData<String> firstName; // this is the new firstName
     public MutableLiveData<String> lastName; // this is the new lastName
     public MutableLiveData<Bitmap> contactIcon; // this is the userIcon
-    public MutableLiveData<Long> phoneNumber; // this is the userIcon
+    public MutableLiveData<String> phoneNumber; // this is the userIcon
     public MutableLiveData<String> email; // this is the new username
     public MutableLiveData<Long> contactId; // permanent userID
     public MutableLiveData<Long> deleteContactId; // the userID of the user we decide to delete
     public MutableLiveData<Integer> deleteContactPosition; //the position of hte user in the RecycleView that we decide to delete
     public MutableLiveData<Integer> contactCount; //The amount of users
+    public MutableLiveData<Integer> saveToggle; // Save state toggle
 
 
     public CreateContact(){
@@ -31,8 +32,8 @@ public class CreateContact extends ViewModel {
         contactIcon = new MediatorLiveData<Bitmap>();
         contactIcon.setValue(null);
 
-        phoneNumber = new MediatorLiveData<Long>();
-        phoneNumber.setValue(0L);
+        phoneNumber = new MediatorLiveData<String>();
+        phoneNumber.setValue("");
 
         email = new MediatorLiveData<String>();
         email.setValue("");
@@ -48,6 +49,9 @@ public class CreateContact extends ViewModel {
 
         contactCount = new MediatorLiveData<Integer>();
         contactCount.setValue(0);
+
+        saveToggle = new MediatorLiveData<Integer>();
+        saveToggle.setValue(0);
     }
 
 
@@ -72,10 +76,10 @@ public class CreateContact extends ViewModel {
         contactIcon.setValue(value);
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber.getValue();
     }
-    public void setPhoneNumber(long value) {
+    public void setPhoneNumber(String value) {
         phoneNumber.setValue(value);
     }
 
@@ -110,8 +114,9 @@ public class CreateContact extends ViewModel {
     public int getContactCount() {
         return contactCount.getValue();
     }
-    public void setContactCount(int value) { contactCount.setValue(value);
-    }
+    public void setContactCount(int value) { contactCount.setValue(value);}
 
+    public int getSaveToggle() {return saveToggle.getValue();}
+    public void setSaveToggle(int value) { saveToggle.setValue(value);}
 
 }
