@@ -68,6 +68,7 @@ public class ContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("Test " + navModel.getHistoricalClickedValue());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
 
@@ -250,10 +251,18 @@ public class ContactFragment extends Fragment {
                     saveContact();
                 }
                 System.out.println("RDebug - saveToggle: " + contactModel.getSaveToggle());
+
                 if (contactModel.getSaveToggle() == 0) {
-                    navModel.setClickedValue(0);
-                    navModel.setHistoricalClickedValue(0);
+                    if (navModel.getHistoricalClickedValue() == 2) {
+                        navModel.setClickedValue(2);
+                        navModel.setHistoricalClickedValue(0);
+                    }
+                    else {
+                        navModel.setClickedValue(0);
+                        navModel.setHistoricalClickedValue(0);
+                    }
                 }
+
             }
         });
 
@@ -406,12 +415,15 @@ public class ContactFragment extends Fragment {
             contactDao.updateContactIcon(editContactModel.getContactId(), editContactModel.getContactIcon());
 
             // Once added, wipes from short term data
-            editContactModel.setContactIcon(null);
-            editContactModel.setFirstName("");
-            editContactModel.setLastName("");
-            editContactModel.setEmail("");
-            editContactModel.setPhoneNumber("");
-            editContactModel.setContactId(0);
+            if (navModel.getHistoricalClickedValue() != 2) {
+                editContactModel.setContactIcon(null);
+                editContactModel.setFirstName("");
+                editContactModel.setLastName("");
+                editContactModel.setEmail("");
+                editContactModel.setPhoneNumber("");
+                editContactModel.setContactId(0);
+            }
+
 
             // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
             contactModel.setContactIcon(null);

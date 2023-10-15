@@ -48,7 +48,7 @@ public class NavBarFragment extends Fragment {
             Author: Parakram + Ryan
      ---------------------------------------------------------------------------------------- */
     NavigationData navigationData;
-    private ImageButton backButton, addButton, importButton;
+    private ImageButton backButton, addButton, importButton, editButton;
     byte[] photo = null;
     Bitmap contactPhoto = null;
     CreateContact contactModel;
@@ -93,6 +93,7 @@ public class NavBarFragment extends Fragment {
         backButton = view.findViewById(R.id.backButton);
         addButton = view.findViewById(R.id.addButton);
         importButton = view.findViewById(R.id.importButton);
+        editButton = view.findViewById(R.id.editButton);
 
         /* -----------------------------------------------------------------------------------------
             Function: Add Click Listener
@@ -116,26 +117,36 @@ public class NavBarFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Once added, wipes from short term data
-                editContactModel.setContactIcon(null);
-                editContactModel.setFirstName("");
-                editContactModel.setLastName("");
-                editContactModel.setEmail("");
-                editContactModel.setPhoneNumber("");
-                editContactModel.setContactId(0);
+                if (navigationData.getClickedValue() == 1 && navigationData.getHistoricalClickedValue() ==2 ){
+                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                }
+                else {
+                    // Once added, wipes from short term data
+                    editContactModel.setContactIcon(null);
+                    editContactModel.setFirstName("");
+                    editContactModel.setLastName("");
+                    editContactModel.setEmail("");
+                    editContactModel.setPhoneNumber("");
+                    editContactModel.setContactId(0);
 
-                // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
-                contactModel.setContactIcon(null);
-                contactModel.setFirstName("");
-                contactModel.setLastName("");
-                contactModel.setEmail("");
-                contactModel.setPhoneNumber("");
-                contactModel.setSaveToggle(0);
+                    // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
+                    contactModel.setContactIcon(null);
+                    contactModel.setFirstName("");
+                    contactModel.setLastName("");
+                    contactModel.setEmail("");
+                    contactModel.setPhoneNumber("");
+                    contactModel.setSaveToggle(0);
 
-                if (navigationData.getHistoricalClickedValue() == 1) {
-                    navigationData.setClickedValue(0);
-                    navigationData.setHistoricalClickedValue(0);
-                    editContactModel.resetEditContact();
+                    if (navigationData.getHistoricalClickedValue() == 1) {
+                        navigationData.setClickedValue(0);
+                        navigationData.setHistoricalClickedValue(0);
+                        editContactModel.resetEditContact();
+                    }
+                    if (navigationData.getClickedValue() == 2) {
+                        navigationData.setClickedValue(0);
+                        navigationData.setHistoricalClickedValue(0);
+                        editContactModel.resetEditContact();
+                    }
                 }
             }
         });
@@ -159,10 +170,32 @@ public class NavBarFragment extends Fragment {
                     openContactsPicker();
                 }
 
-                navigationData.setClickedValue(2);
+
+            }
+        });
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Edit Click Listener
+            Author: Ryan
+            Description: Navigates to the last known fragment (or alternate fragment in special
+                cases).
+         ---------------------------------------------------------------------------------------- */
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Once added, wipes from short term data (this has been added to ensure no excess data has carried over)
+                contactModel.setContactIcon(null);
+                contactModel.setFirstName("");
+                contactModel.setLastName("");
+                contactModel.setEmail("");
+                contactModel.setPhoneNumber("");
+                contactModel.setSaveToggle(0);
+                //set the navigation paths to the edit page
+                navigationData.setClickedValue(1);
                 navigationData.setHistoricalClickedValue(2);
             }
         });
+
 
         /* -----------------------------------------------------------------------------------------
             Function: navigationData observer
@@ -176,11 +209,21 @@ public class NavBarFragment extends Fragment {
                     backButton.setVisibility(View.GONE);
                     addButton.setVisibility(View.VISIBLE);
                     importButton.setVisibility(View.VISIBLE);
+                    editButton.setVisibility(View.GONE);
+
                 }
                 if (integer == 1) {
                     backButton.setVisibility(View.VISIBLE);
                     addButton.setVisibility(View.GONE);
                     importButton.setVisibility(View.GONE);
+                    editButton.setVisibility(View.GONE);
+
+                }
+                if (integer == 2) {
+                    backButton.setVisibility(View.VISIBLE);
+                    addButton.setVisibility(View.GONE);
+                    importButton.setVisibility(View.GONE);
+                    editButton.setVisibility(View.VISIBLE);
                 }
             }});
 

@@ -37,6 +37,37 @@ public class EditDeleteContactAdapter extends RecyclerView.Adapter<EditDeleteCon
         holder.contactIcon.setImageBitmap(singleRow.getImage());
         holder.contactNameTextBox.setText(singleRow.getFirstName() + " " + singleRow.getLastName());
 
+        holder.contactIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navModel.setClickedValue(2);
+
+                // Sets the data in the adapter from the view holder
+                editContactModel.setFirstName(singleRow.getFirstName());
+                editContactModel.setLastName(singleRow.getLastName());
+                editContactModel.setEmail(singleRow.getEmail());
+                editContactModel.setPhoneNumber(singleRow.getPhoneNumber());
+                editContactModel.setContactIcon(singleRow.getImage());
+                editContactModel.setContactId(singleRow.getId());
+
+            }});
+
+
+
+        holder.contactNameTextBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navModel.setClickedValue(2);
+
+                // Sets the data in the adapter from the view holder
+                editContactModel.setFirstName(singleRow.getFirstName());
+                editContactModel.setLastName(singleRow.getLastName());
+                editContactModel.setEmail(singleRow.getEmail());
+                editContactModel.setPhoneNumber(singleRow.getPhoneNumber());
+                editContactModel.setContactIcon(singleRow.getImage());
+                editContactModel.setContactId(singleRow.getId());
+
+            }});
         /* -----------------------------------------------------------------------------------------
                 Function: contactDelete Click Listener
                 Author: Ryan

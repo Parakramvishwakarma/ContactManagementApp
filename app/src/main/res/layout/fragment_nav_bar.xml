@@ -67,6 +67,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/edit_icon"
+        android:tag="settings_button"
+        android:visibility="gone"
+        app:iconTint="#FC9B4C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -42,10 +42,29 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         loadContactFrag();
                         break;
+                    case 2:
+                        loadDisplayFrag();
                 }
             }
         });
     }
+
+    /* -----------------------------------------------------------------------------------------
+               Author: Parakram
+               Description: Loads the contact view fragment
+        ---------------------------------------------------------------------------------------- */
+    private void loadDisplayFrag() {
+        DisplayFragment displayFragment = new DisplayFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment frag = fm.findFragmentById(R.id.body_container);
+        if (frag!= null) {
+            fm.beginTransaction().replace(R.id.body_container, displayFragment, "displayFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.body_container, displayFragment, "displayFragment").commit();
+        }
+    }
+
     /* -----------------------------------------------------------------------------------------
                   Author: Parakram
                   Description: Loads the contact view fragment
